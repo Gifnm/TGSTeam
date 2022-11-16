@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="170" pageHeight="170" columnWidth="130" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c2bf0a40-849b-4a0c-9c25-5330ae6d2f1a">
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     NhanVien."MaNV" AS NhanVien_MaNV,
+     NhanVien."HoTenNV" AS NhanVien_HoTenNV,
+     NhanVien."GioiTinh" AS NhanVien_GioiTinh,
+     NhanVien."DiaChi" AS NhanVien_DiaChi,
+     NhanVien."SoDienThoai" AS NhanVien_SoDienThoai,
+     NhanVien."Email" AS NhanVien_Email,
+     NhanVien."NgaySinh" AS NhanVien_NgaySinh,
+     NhanVien."MatKhau" AS NhanVien_MatKhau,
+     NhanVien."HinhAnh" AS NhanVien_HinhAnh,
+     NhanVien."MaCH" AS NhanVien_MaCH,
+     NhanVien."VaiTro" AS NhanVien_VaiTro
+FROM
+     "dbo"."NhanVien" NhanVien]]>
+	</queryString>
+	<field name="NhanVien_MaNV" class="java.lang.Integer"/>
+	<field name="NhanVien_HoTenNV" class="java.lang.String"/>
+	<field name="NhanVien_GioiTinh" class="java.lang.Boolean"/>
+	<field name="NhanVien_DiaChi" class="java.lang.String"/>
+	<field name="NhanVien_SoDienThoai" class="java.lang.String"/>
+	<field name="NhanVien_Email" class="java.lang.String"/>
+	<field name="NhanVien_NgaySinh" class="java.sql.Date"/>
+	<field name="NhanVien_MatKhau" class="java.lang.String"/>
+	<field name="NhanVien_HinhAnh" class="java.lang.String"/>
+	<field name="NhanVien_MaCH" class="java.lang.Integer"/>
+	<field name="NhanVien_VaiTro" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="-17" y="0" width="131" height="14" uuid="ec7ce31a-83a6-4d59-a105-4ae506a6f892"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Họ tên: Nguyễn Minh Thư]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="-17" y="0" width="74" height="20" uuid="cb22a348-5853-4a01-9c42-7fe4d1e1eb54"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Giới tính: Nam]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="-17" y="0" width="131" height="20" uuid="09639ff0-df92-4bc2-b14a-60df4fe32c56"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vai trò: Nhân viên thu ngân]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="796e12e2-0b79-417a-afe9-542cf8601b0a"/>
+				<textFieldExpression><![CDATA[$F{NhanVien_HoTenNV}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
