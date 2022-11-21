@@ -17,19 +17,20 @@ import java.util.List;
  * @author ASUS
  */
 public class CaLamViecCTDAO extends TGSTeamDAO<CaLamViecCT, String>{
-String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong) VALUES(?,?,?,?)";
-     String UPDATE_SQL = "UPDATE CaLamViecCT SET MaCaLV = ? WHERE MaNV = ? and Ngay = ?";
+String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,XacNhanQuanLy,GioCongXacNhan,GhiChu) VALUES(?,?,?,?,?,?,?)";
+     String UPDATE_SQL = "UPDATE CaLamViecCT SET MaCaLV = ? WHERE MaNV = ? and Ngay = ? and MaCaLV = ?";
      String DELETE_SQL = "DELETE FROM CaLamViecCT WHERE MaCaLV = ?";
     String SELECT_ALL_SQL = "SELECT * FROM CaLamViecCT";
     String SELECT_BY_ID_SQL = "SELECT * FROM CaLamViecCT WHERE MaCaLV = ?";
     @Override
     public void insert(CaLamViecCT entity) {
-         jdbcHepler.update(INSERT_SQL, entity.getMaCaLV(),entity.getMaNV(),entity.getNgay(),null);
+        System.out.println("DAO.CaLamViecCTDAO.insert()");
+         jdbcHepler.update(INSERT_SQL, entity.getMaCaLV(),entity.getMaNV(),entity.getNgay(),null,false,0,null);
     }
 
     @Override
     public void update(CaLamViecCT entity) {
-         jdbcHepler.update(UPDATE_SQL, entity.getMaCaLV(),entity.getMaNV(),entity.getNgay());
+         jdbcHepler.update(UPDATE_SQL, entity.getMaCaLV(),entity.getMaNV(),entity.getNgay(), entity.getMaCaLV());
     }
 
     @Override
@@ -67,6 +68,9 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong) 
                entity.setMaNV(rs.getInt(2));
                entity.setNgay(rs.getString(3));
                entity.setThoiGianChamCong(rs.getString(4));
+               entity.setXacNhanQuanLy(rs.getBoolean(5));
+               entity.setGioCongXacNhan(rs.getFloat(6));
+               entity.setGhiChu(rs.getString(7));
                 list.add(entity);
 
             }
@@ -96,5 +100,47 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong) 
 
         return true;
     }
-    
+    public void deleteAllBydate(String Ngay){
+    String sQL = "Delete from CaLamViecCT Where Ngay = ?";
+    jdbcHepler.update(sQL, Ngay);
+    }
+       public List<CaLamViecCT> selectByDateAndMaNV(String Date, Integer MaNV) {
+           String sql = "Select * from CaLamViecCT where Ngay = ? and MaNV = ?";
+        List<CaLamViecCT> list = this.selectBySql(sql, Date, MaNV);
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        return list;
+    }
+       public void updateTime(CaLamViecCT enity){
+       String sQL = "Update CaLamViecCT set ThoiGianChamCong = ? Where MaCaLV = ? and MaNV = ? and Ngay = ?";
+       jdbcHepler.update(sQL, enity.getThoiGianChamCong(),enity.getMaCaLV(),enity.getMaNV(),enity.getNgay());
+       
+       }
+       public List<CaLamViecCT> getLichSuChamCong(String Date, Integer MaNV) {
+           String sql = "Select *   from CaLamViecCT\n" +
+"Where (Ngay > CONVERT(VARCHAR(25),DATEADD(dd,-(DAY(GETDATE())-1),GETDATE()),101)   or Ngay = ?) and MaNV = ?\n" +
+"ORDER BY Ngay";
+        List<CaLamViecCT> list = this.selectBySql(sql, Date, MaNV);
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        return list;
+    }
+       public List<CaLamViecCT> getCaLamViecChoXN() {
+           String sql = "Select *   from CaLamViecCT\n" +
+"Where XacNhanQuanLy = '0' order by Ngay";
+        List<CaLamViecCT> list = this.selectBySql(sql);
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        return list;
+    }
+    public static void main(String[] args) {
+        CaLamViecCTDAO c = new CaLamViecCTDAO();
+        c.deleteAllBydate("2022-11-15");
+    }
 }

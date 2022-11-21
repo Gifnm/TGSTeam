@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="141" pageHeight="180" columnWidth="101" leftMargin="20" rightMargin="20" topMargin="28" bottomMargin="20" uuid="13ff57dc-7a48-4b6b-bfeb-474976dcc690">
+	<property name="ireport.zoom" value="2.853116706110003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Barcode" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     SanPham."ID" AS SanPham_ID,
+     SanPham."Barcode" AS SanPham_Barcode,
+     SanPham."TenSP" AS SanPham_TenSP,
+     SanPham."GiaMuon" AS SanPham_GiaMuon,
+     SanPham."DonGia" AS SanPham_DonGia,
+     SanPham."MaLoaiSP" AS SanPham_MaLoaiSP,
+     SanPham."MaCH" AS SanPham_MaCH,
+     SanPham."HinhAnh" AS SanPham_HinhAnh,
+     SanPham."SoLuongTrungBay" AS SanPham_SoLuongTrungBay
+FROM
+     "dbo"."SanPham" SanPham
+Where SanPham."Barcode" = $P{Barcode}]]>
+	</queryString>
+	<field name="SanPham_ID" class="java.lang.Integer"/>
+	<field name="SanPham_Barcode" class="java.lang.String"/>
+	<field name="SanPham_TenSP" class="java.lang.String"/>
+	<field name="SanPham_GiaMuon" class="java.lang.Double"/>
+	<field name="SanPham_DonGia" class="java.lang.Double"/>
+	<field name="SanPham_MaLoaiSP" class="java.lang.String"/>
+	<field name="SanPham_MaCH" class="java.lang.Integer"/>
+	<field name="SanPham_HinhAnh" class="java.lang.String"/>
+	<field name="SanPham_SoLuongTrungBay" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="27" splitType="Stretch">
+			<image>
+				<reportElement x="-19" y="-30" width="40" height="41" uuid="5136ef2e-4a6a-42b1-ba4d-1cbd00b18573"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+$F{SanPham_Barcode},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="21" y="-29" width="67" height="29" uuid="f3089223-9ccb-45e5-822f-5c663bd31271"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SanPham_TenSP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="21" y="0" width="80" height="20" uuid="7ddaad27-9aa2-4838-ba1b-46e95b409cf1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SanPham_DonGia} +" VND"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

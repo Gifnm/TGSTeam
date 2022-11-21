@@ -9,6 +9,8 @@ import DAO.NhanVienDAO;
 import Model.NhanVien;
 import com.edysys.utils.Auth;
 import com.edysys.utils.MsgBox;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -44,6 +46,8 @@ public class View_Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle("Login");
+        Image img1 = Toolkit.getDefaultToolkit().createImage("C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\icon\\bird.png");
+        this.setIconImage(img1);
     }
 
     /**
@@ -73,11 +77,13 @@ public class View_Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
+        jTabbedPane1.setForeground(new java.awt.Color(102, 102, 102));
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(155, 50));
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 204, 255));
@@ -118,6 +124,7 @@ public class View_Login extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel6.setText("TGS Nói: Cách bạn làm một việc là cách bạn làm mọi việc!");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -146,7 +153,7 @@ public class View_Login extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(75, 75, 75)
                         .addComponent(jLabel6)))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,10 +174,12 @@ public class View_Login extends javax.swing.JFrame {
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Login & U", jPanel2);
+
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 204, 255));
@@ -200,6 +209,7 @@ public class View_Login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("QR code in card:");
 
+        jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel7.setText("TGS Nói: Cách bạn làm một việc là cách bạn làm mọi việc!");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -225,7 +235,7 @@ public class View_Login extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(80, 80, 80)
                         .addComponent(jLabel7)))
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,7 +252,7 @@ public class View_Login extends javax.swing.JFrame {
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Login & C", jPanel1);
@@ -256,7 +266,7 @@ public class View_Login extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -296,12 +306,42 @@ public class View_Login extends javax.swing.JFrame {
                 System.out.println(nv.getMatKhau() + "-" + txtPassWork.getText() + nv.getEmail() + "-");
                 MsgBox.alert(this, "Sai mật khẩu");
             } else {
-                MsgBox.alert(this, "Đăng nhập thành công");
+                // Kiểm tra vai trof người đăng nhập
                 Auth.user = nv;
-                new View_MBH().setVisible(true);
-
+                if (nv.getVaiTro().equalsIgnoreCase("ThuNgan")) {
+                    MsgBox.alert(this, "Xin chào " + nv.getHoTenNV());
+                    new View_MBH().setVisible(true);
+                    this.setVisible(false);
+                } else if (nv.getVaiTro().equalsIgnoreCase("TrungBay")) {
+                    MsgBox.alert(this, "Xin chào " + nv.getHoTenNV());
+                    new View_MBH().setVisible(true);
+                    this.setVisible(false);
+                } else if (nv.getVaiTro().equalsIgnoreCase("QuanLy")) {
+                    Object[] possibleValues = {"Quản lý", "Thu ngân", "Trưng bày"};
+                    Object selectedValue = JOptionPane.showInputDialog(null,
+                            "Hãy lựa chọn giao giao diện muốn sử dụng", "Input",
+                            JOptionPane.QUESTION_MESSAGE, null,
+                            possibleValues, possibleValues[0]);
+                    if(String.valueOf(selectedValue).equalsIgnoreCase("Quản Lý")){
+                    MsgBox.alert(this, "Xin chào " + nv.getHoTenNV());
+                    new View_QuangLyCH().setVisible(true);
+                    this.dispose();
+                    }
+                    else if(String.valueOf(selectedValue).equalsIgnoreCase("Trưng bày")){
+                    MsgBox.alert(this, "Xin chào " + nv.getHoTenNV());
+                    new View_TBHH().setVisible(true);
+                    this.dispose();
+                    }
+                    else if(String.valueOf(selectedValue).equalsIgnoreCase("Thu Ngân")){
+                    MsgBox.alert(this, "Xin chào " + nv.getHoTenNV());
+                    new View_MBH().setVisible(true);
+                    this.dispose();
+                    }
+                    
+                }
             }
         }
+
 
     }//GEN-LAST:event_jButton3ActionPerformed
 

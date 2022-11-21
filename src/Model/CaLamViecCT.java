@@ -15,7 +15,9 @@ public class CaLamViecCT {
     private Integer MaNV;
     private String Ngay;
     private String ThoiGianChamCong;
-
+    private Boolean xacNhanQuanLy;
+    private Float gioCongXacNhan;
+    private String ghiChu;
     public CaLamViecCT() {
     }
 
@@ -25,6 +27,20 @@ public class CaLamViecCT {
         this.Ngay = Ngay;
         this.ThoiGianChamCong = null;
     }
+
+    public CaLamViecCT(String MaCaLV, Integer MaNV, String Ngay, String ThoiGianChamCong, Boolean xacNhanQuanLy, Float gioCongXacNhan, String ghiChu) {
+        this.MaCaLV = MaCaLV;
+        this.MaNV = MaNV;
+        this.Ngay = Ngay;
+        this.ThoiGianChamCong = ThoiGianChamCong;
+        this.xacNhanQuanLy = xacNhanQuanLy;
+        this.gioCongXacNhan = gioCongXacNhan;
+        this.ghiChu = ghiChu;
+    }
+
+    
+
+    
 
     public String getMaCaLV() {
         return MaCaLV;
@@ -58,4 +74,31 @@ public class CaLamViecCT {
         this.ThoiGianChamCong = ThoiGianChamCong;
     }
 
+    public Boolean getXacNhanQuanLy() {
+        return xacNhanQuanLy;
+    }
+
+    public void setXacNhanQuanLy(Boolean xacNhanQuanLy) {
+        this.xacNhanQuanLy = xacNhanQuanLy;
+    }
+
+    public Float getGioCongXacNhan() {
+        return gioCongXacNhan;
+    }
+
+    public void setGioCongXacNhan(Float gioCongXacNhan) {
+        this.gioCongXacNhan = gioCongXacNhan;
+    }
+
+    
+
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
+    }
+
+    
 }

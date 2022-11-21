@@ -63,6 +63,7 @@ public class CaLamViecDAO extends TGSTeamDAO<CaLamViec, String>{
               entity.setMaCaLV(rs.getString(1));
               entity.setThoiGianBatDau(rs.getString(2));
               entity.setThoiGianKetThuc(rs.getString(3));
+              entity.setSoGioCong(rs.getInt(4));
                 list.add(entity);
 
             }
