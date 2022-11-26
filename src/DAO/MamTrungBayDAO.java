@@ -97,5 +97,15 @@ public class MamTrungBayDAO extends TGSTeamDAO<MamTrungBay, Integer> {
         
         return list;
     }
+    public List<MamTrungBay> getSanPhamTrenKe(Integer soKe) {
+         String sQL = "SELECT * FROM MamTrungBay WHERE SoKe = ?";
+        List<MamTrungBay> list = this.selectBySql(sQL, soKe);
+        if (list.isEmpty()) {
+            
+            return null;
+        }
+        
+        return list;
+    }
     
 }

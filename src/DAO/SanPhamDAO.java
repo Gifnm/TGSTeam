@@ -82,5 +82,10 @@ String INSERT_SQL = "INSERT INTO NhanVien(MaNv,MatKhau,HoTen,VaiTro) VALUES(?,?,
         }
     
     }
+    public List<SanPham> selectBykeyWork(String KeyWork) {
+		// TODO Auto-generated method stub
+		String SelectByKeyWork = "SELECT * FROM SanPham WHERE TenSP LIKE ?";
+		return this.selectBySql(SelectByKeyWork,"%"+KeyWork+"%");
+	}
     
 }

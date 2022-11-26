@@ -134,5 +134,9 @@ public class SanPham {
     
    return  this.SoLuongBan*this.getDonGia();
   
-    }	
+    }
+    @Override 
+        public String toString(){
+    return this.TenSP;
+    }
 }

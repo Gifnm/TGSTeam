@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="141" pageHeight="180" columnWidth="101" leftMargin="20" rightMargin="20" topMargin="28" bottomMargin="20" uuid="13ff57dc-7a48-4b6b-bfeb-474976dcc690">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="141" pageHeight="187" columnWidth="101" leftMargin="20" rightMargin="20" topMargin="28" bottomMargin="20" uuid="13ff57dc-7a48-4b6b-bfeb-474976dcc690">
 	<property name="ireport.zoom" value="2.853116706110003"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -16,10 +16,16 @@
      SanPham."MaLoaiSP" AS SanPham_MaLoaiSP,
      SanPham."MaCH" AS SanPham_MaCH,
      SanPham."HinhAnh" AS SanPham_HinhAnh,
-     SanPham."SoLuongTrungBay" AS SanPham_SoLuongTrungBay
+     SanPham."SoLuongTrungBay" AS SanPham_SoLuongTrungBay,
+     MamTrungBay."SoKe" AS MamTrungBay_SoKe,
+     MamTrungBay."SoMam" AS MamTrungBay_SoMam,
+     MamTrungBay."Barcode" AS MamTrungBay_Barcode,
+     MamTrungBay."ViTri" AS MamTrungBay_ViTri,
+     MamTrungBay."TrungBay" AS MamTrungBay_TrungBay
 FROM
-     "dbo"."SanPham" SanPham
-Where SanPham."Barcode" = $P{Barcode}]]>
+     "dbo"."SanPham" SanPham INNER JOIN "dbo"."MamTrungBay" MamTrungBay ON SanPham."Barcode" = MamTrungBay."Barcode"
+WHERE
+     SanPham."Barcode" = $P{Barcode}]]>
 	</queryString>
 	<field name="SanPham_ID" class="java.lang.Integer"/>
 	<field name="SanPham_Barcode" class="java.lang.String"/>
@@ -30,6 +36,11 @@ Where SanPham."Barcode" = $P{Barcode}]]>
 	<field name="SanPham_MaCH" class="java.lang.Integer"/>
 	<field name="SanPham_HinhAnh" class="java.lang.String"/>
 	<field name="SanPham_SoLuongTrungBay" class="java.lang.Integer"/>
+	<field name="MamTrungBay_SoKe" class="java.lang.Integer"/>
+	<field name="MamTrungBay_SoMam" class="java.lang.Integer"/>
+	<field name="MamTrungBay_Barcode" class="java.lang.String"/>
+	<field name="MamTrungBay_ViTri" class="java.lang.Integer"/>
+	<field name="MamTrungBay_TrungBay" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -43,18 +54,46 @@ $F{SanPham_Barcode},
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="21" y="-29" width="67" height="29" uuid="f3089223-9ccb-45e5-822f-5c663bd31271"/>
+				<reportElement x="21" y="-29" width="64" height="19" uuid="f3089223-9ccb-45e5-822f-5c663bd31271"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{SanPham_TenSP}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="21" y="0" width="80" height="20" uuid="7ddaad27-9aa2-4838-ba1b-46e95b409cf1"/>
+				<reportElement x="21" y="-10" width="80" height="21" uuid="7ddaad27-9aa2-4838-ba1b-46e95b409cf1"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{SanPham_DonGia} +" VND"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-19" y="11" width="21" height="10" uuid="7ad9ad3e-a33f-49af-b4ca-10ee3ec3ea40"/>
+				<textElement textAlignment="Justified">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kệ:"+$F{MamTrungBay_SoKe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="11" width="30" height="10" uuid="5efeada5-4e6a-4353-a56c-ff2337f9e160"/>
+				<textElement textAlignment="Justified">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Mâm:"+$F{MamTrungBay_SoMam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="32" y="11" width="29" height="10" uuid="1164f652-1992-49f0-9e91-4e0a16c0f725"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Vị trí:"+$F{MamTrungBay_ViTri}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="11" width="61" height="10" uuid="9eaec188-a7e7-4a2b-a02b-9d6c2234456c"/>
+				<textElement textAlignment="Justified">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Trưng bày:"+$F{MamTrungBay_TrungBay}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

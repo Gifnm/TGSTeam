@@ -12,6 +12,8 @@ import Model.NhanVien;
 import com.edysys.utils.Auth;
 import java.awt.Button;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Label;
@@ -23,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -37,11 +41,14 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
      */
     public View_LichSuChamCong() {
         initComponents();
+        this.setLocationRelativeTo(null);
         Image img1 = Toolkit.getDefaultToolkit().createImage("C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\icon\\bird.png");
         this.setIconImage(img1);
          AddChamCong();
        modelLsChamCham = (DefaultTableModel) jtbLSChamCong.getModel();
        FillToTable();
+       jlb_LsChamCong_Thang.setText("Tháng "+LayThang());
+       jtbLSChamCong.setDefaultRenderer(Object.class, new RenderTablaPrestamos());
     }
 
     /**
@@ -56,6 +63,12 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbLSChamCong = new javax.swing.JTable();
         jpnChamCong = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jlb_LsChamCong_Thang = new javax.swing.JLabel();
+        jlb_LsChamCong_Thang1 = new javax.swing.JLabel();
+        jlb_LsChamCong_Thang3 = new javax.swing.JLabel();
+        jlb_GioCongXN = new javax.swing.JLabel();
+        jlb_LsChamCong_Thang4 = new javax.swing.JLabel();
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -68,6 +81,7 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
             }
         });
 
+        jtbLSChamCong.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jtbLSChamCong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -84,9 +98,12 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jtbLSChamCong.setGridColor(new java.awt.Color(153, 204, 255));
+        jtbLSChamCong.setOpaque(false);
+        jtbLSChamCong.setRowHeight(25);
         jScrollPane1.setViewportView(jtbLSChamCong);
 
-        jpnChamCong.setBackground(new java.awt.Color(153, 204, 255));
+        jpnChamCong.setBackground(new java.awt.Color(255, 255, 255));
         jpnChamCong.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chấm công", javax.swing.border.TitledBorder.LEADING, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
 
         javax.swing.GroupLayout jpnChamCongLayout = new javax.swing.GroupLayout(jpnChamCong);
@@ -100,6 +117,61 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
             .addGap(0, 182, Short.MAX_VALUE)
         );
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jlb_LsChamCong_Thang.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jlb_LsChamCong_Thang.setForeground(new java.awt.Color(255, 153, 102));
+        jlb_LsChamCong_Thang.setText("\"Tháng\"");
+
+        jlb_LsChamCong_Thang1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jlb_LsChamCong_Thang1.setText("Tổng số giờ công xác nhận / Tổng số giờ phân ca:");
+
+        jlb_LsChamCong_Thang3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jlb_LsChamCong_Thang3.setText("Tổng số giờ nghỉ phép:");
+
+        jlb_GioCongXN.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jlb_GioCongXN.setForeground(new java.awt.Color(255, 51, 102));
+        jlb_GioCongXN.setText("\"Gio cong\"");
+
+        jlb_LsChamCong_Thang4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jlb_LsChamCong_Thang4.setForeground(new java.awt.Color(255, 51, 102));
+        jlb_LsChamCong_Thang4.setText("0");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlb_LsChamCong_Thang, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlb_LsChamCong_Thang1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlb_GioCongXN, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlb_LsChamCong_Thang3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jlb_LsChamCong_Thang4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlb_LsChamCong_Thang)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlb_LsChamCong_Thang1)
+                    .addComponent(jlb_GioCongXN))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlb_LsChamCong_Thang3)
+                    .addComponent(jlb_LsChamCong_Thang4))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,15 +180,23 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jpnChamCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jpnChamCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jpnChamCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -169,7 +249,13 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jlb_GioCongXN;
+    private javax.swing.JLabel jlb_LsChamCong_Thang;
+    private javax.swing.JLabel jlb_LsChamCong_Thang1;
+    private javax.swing.JLabel jlb_LsChamCong_Thang3;
+    private javax.swing.JLabel jlb_LsChamCong_Thang4;
     private javax.swing.JPanel jpnChamCong;
     private javax.swing.JTable jtbLSChamCong;
     // End of variables declaration//GEN-END:variables
@@ -325,4 +411,20 @@ List<CaLamViecCT> List = new ArrayList<>();
         String timeNow = dateFormat.format(cal.getTime());
         return timeNow;
     }
+    public String LayThang() {
+        DateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+        Calendar cal = Calendar.getInstance();
+        String timeNow = dateFormat.format(cal.getTime());
+        return timeNow;
+    }
+    public class RenderTablaPrestamos extends DefaultTableCellRenderer{
+@Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+    {
+        final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+        return c;
+    }
+
+}
 }

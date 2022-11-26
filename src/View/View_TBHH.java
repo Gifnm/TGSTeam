@@ -1,16 +1,23 @@
 package View;
 
-
+import DAO.CaLamViecCTDAO;
+import Model.CaLamViecCT;
+import Model.NhanVien;
+import com.edysys.utils.Auth;
 import java.awt.CardLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import javax.swing.UIManager;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author ASUS
@@ -21,13 +28,14 @@ public class View_TBHH extends javax.swing.JFrame {
      * Creates new form TBHH
      */
     CardLayout card = new CardLayout();
+
     public View_TBHH() {
-       
+
         initComponents();
         Image img1 = Toolkit.getDefaultToolkit().createImage("C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\icon\\bird.png");
         this.setIconImage(img1);
-         this.jpnCard.setLayout(card);
-         this.setLocationRelativeTo(null);
+        this.jpnCard.setLayout(card);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -48,28 +56,27 @@ public class View_TBHH extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton3 = new javax.swing.JButton();
-        jSeparator3 = new javax.swing.JToolBar.Separator();
-        jButton5 = new javax.swing.JButton();
-        jSeparator5 = new javax.swing.JToolBar.Separator();
-        jButton6 = new javax.swing.JButton();
         jpnCard = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.CardLayout());
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
@@ -121,26 +128,6 @@ public class View_TBHH extends javax.swing.JFrame {
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton3);
-        jToolBar1.add(jSeparator3);
-
-        jButton5.setBackground(new java.awt.Color(153, 204, 255));
-        jButton5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(102, 102, 102));
-        jButton5.setText("Bàn giao ca");
-        jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton5);
-        jToolBar1.add(jSeparator5);
-
-        jButton6.setBackground(new java.awt.Color(153, 204, 255));
-        jButton6.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(102, 102, 102));
-        jButton6.setText("Châm hàng");
-        jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton6);
 
         jpnCard.setLayout(new java.awt.CardLayout());
 
@@ -169,30 +156,6 @@ public class View_TBHH extends javax.swing.JFrame {
 
         jMenuBar1.setBackground(new java.awt.Color(153, 153, 153));
 
-        jMenu1.setText("Cá nhân");
-
-        jMenuItem1.setText("Thông tin cá nhân");
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setText("Chấm công");
-        jMenu1.add(jMenuItem2);
-
-        jMenuItem3.setText("Đăng xuất");
-        jMenu1.add(jMenuItem3);
-
-        jMenuItem4.setText("Lịch phân ca cá nhân");
-        jMenu1.add(jMenuItem4);
-
-        jMenuItem5.setText("Phân ca TGSteam");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem5);
-
-        jMenuBar1.add(jMenu1);
-
         jMenu2.setText("Chức năng hệ thống");
 
         jMenuItem6.setText("Home");
@@ -212,13 +175,36 @@ public class View_TBHH extends javax.swing.JFrame {
         jMenuItem9.setText("In tem giá");
         jMenu2.add(jMenuItem9);
 
-        jMenuItem10.setText("Bàn giao ca");
-        jMenu2.add(jMenuItem10);
-
-        jMenuItem11.setText("Châm hàng");
-        jMenu2.add(jMenuItem11);
-
         jMenuBar1.add(jMenu2);
+
+        jMenu1.setText("Chức năng khác");
+
+        jMenuItem1.setText("Thông tin cá nhân");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Lịch sử chấm công");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem4.setText("Lịch phân ca cá nhân");
+        jMenu1.add(jMenuItem4);
+
+        jMenuItem5.setText("Phân ca TGSteam");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
+
+        jMenuItem3.setText("Đăng xuất");
+        jMenu1.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -231,19 +217,25 @@ public class View_TBHH extends javax.swing.JFrame {
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
-         java.awt.CardLayout cardLayout = (java.awt.CardLayout) this.getContentPane().getLayout();
+        java.awt.CardLayout cardLayout = (java.awt.CardLayout) this.getContentPane().getLayout();
         cardLayout.first(this.getContentPane());
-       
+
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         //java.awt.CardLayout cardLayout = (java.awt.CardLayout) this.getContentPane().getLayout();
+        //java.awt.CardLayout cardLayout = (java.awt.CardLayout) this.getContentPane().getLayout();
 //         TrungBayHHHome tbhh = new TrungBayHHHome();
 //         cardLayout.addLayoutComponent(tbhh, "TBHHHome");
 //        cardLayout.show(this.getContentPane(), "TBHHHome");
-jpnCard.add(new Tbhh_Jpn(),"Add");
-card.show(jpnCard, "Add");
+        System.out.println("k1");
+        try {
+            jpnCard.add(new Tbhh_Jpn(), "Add");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        card.show(jpnCard, "Add");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -251,6 +243,50 @@ card.show(jpnCard, "Add");
         CardLayout cardLayout = (CardLayout) this.jpnCard.getLayout();
         cardLayout.first(this.jpnCard);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        NhanVien nv = new NhanVien();
+        nv = Auth.user;
+        // Hiển thị tên nhân viên ở Bottom màng hình
+
+        /*
+       - Hiển thị form chấm công
+       + điều kiện 1: Nhân viên có ca làm việc
+       + điều kiện 2: nhân viên có ca chưa chấm
+         */
+        // Giải quyết diều kiện 1: Tìm kiếm CaLamViecCT với diều 2 tham số (MaNV,Ngay), kết quả khác null => Nhân viên có ca làm việc
+        // Giải quyết điều kiện 2: Lấy ThoiGianChamCong nếu trả về null => nhân viên chưa chấm công
+        CaLamViecCTDAO dao = new CaLamViecCTDAO();
+        List<CaLamViecCT> list = new ArrayList<>();
+        list = dao.selectByDateAndMaNV(LayNgay(), nv.getMaNV());
+        if (list.size() > 0) {
+            for (CaLamViecCT caLamViecCT : list) {
+                if (caLamViecCT.getThoiGianChamCong() == null) {
+                    ChamCong chamCong_View = new ChamCong();
+                    try {
+                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                        chamCong_View.setVisible(true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    };
+                    chamCong_View.setLocationRelativeTo(null);
+                    return;
+                }
+            }
+        }
+    }//GEN-LAST:event_formComponentShown
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        View_LichSuChamCong view_LichSuChamCong = new View_LichSuChamCong();
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            view_LichSuChamCong.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,7 +317,7 @@ card.show(jpnCard, "Add");
         //</editor-fold>
 
         /* Create and display the form */
-          try {
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             new View_TBHH().setVisible(true);
         } catch (Exception e) {
@@ -294,15 +330,11 @@ card.show(jpnCard, "Add");
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -314,10 +346,15 @@ card.show(jpnCard, "Add");
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel jpnCard;
     // End of variables declaration//GEN-END:variables
+
+    public String LayNgay() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        String timeNow = dateFormat.format(cal.getTime());
+        return timeNow;
+    }
 }

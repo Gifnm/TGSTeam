@@ -20,7 +20,7 @@ public class HoaDonDAO extends TGSTeamDAO<HoaDon, String> {
     String INSERT_SQL = "INSERT INTO HoaDon(MaHD,MaNV,NgayTao,TienMat,TienThoi,TongTien) VALUES(?,?,?,?,?,?)";
     // String UPDATE_SQL = "UPDATE NhanVien SET MatKhau = ?,HoTen = ?, VaiTro = ? WHERE MaNV = ?";
     // String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNV = ?";
-    String SELECT_ALL_SQL = "SELECT * FROM HoaDon";
+    String SELECT_ALL_SQL = "SELECT * FROM HoaDon order by STT desc";
     String SELECT_BY_ID_SQL = "SELECT * FROM HoaDon WHERE MaHD = ?";
 
     @Override
@@ -78,5 +78,15 @@ public class HoaDonDAO extends TGSTeamDAO<HoaDon, String> {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+    public List<HoaDon> selectHoaDonForToDay(String oh, String ooh) {
+        String sql = "Select * from HoaDon where NgayTao > ? and NgayTao < ? order by STT desc";
+        List<HoaDon> list = this.selectBySql(sql, oh,ooh);
+        if (list.isEmpty()) {
+
+            return null;
+        }
+
+        return list;
     }
 }

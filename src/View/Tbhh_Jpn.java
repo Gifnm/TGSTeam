@@ -4,22 +4,37 @@
  */
 package View;
 
+import DAO.KeTrungBayDAO;
 import DAO.MamTrungBayDAO;
 import DAO.SanPhamDAO;
+import Model.KeTrungBay;
 import Model.MamTrungBay;
 import Model.SanPham;
+import com.edysys.utils.MsgBox;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Panel;
 import java.awt.ScrollPane;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
 
 /**
  *
@@ -75,7 +90,8 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jpnKe = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
         jTabbedPane1.setForeground(new java.awt.Color(102, 102, 102));
@@ -252,7 +268,13 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton2.setText("Tìm kệ");
+        txtSoKe.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSoKeKeyPressed(evt);
+            }
+        });
+
+        jButton2.setText("Xem kê");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -266,11 +288,21 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
 
         jlbMam.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jlbMam.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlbMam.setText("\"Mâm\"");
+        jlbMam.setText("1");
 
         jButton3.setText("<");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText(">");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -289,12 +321,17 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
 
         jScrollPane1.setViewportView(jpnKe);
 
-        jButton5.setText("jButton5");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jButton6.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/print-icon.png"))); // NOI18N
+        jButton6.setText("In tem giá kệ");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jButton6ActionPerformed(evt);
             }
         });
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel1.setText("Mâm:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -304,48 +341,48 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
                 .addGap(0, 0, 0)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 978, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGap(215, 575, Short.MAX_VALUE)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(txtSoKe, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addGap(8, 8, 8))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jlbMam, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton5)
-                                .addGap(110, 110, 110)
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(txtSoKe, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton2)
-                                .addGap(8, 8, 8))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton4)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(0, 0, 0))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6)
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSoKe, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtSoKe, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel17))
-                    .addComponent(jButton5))
+                        .addComponent(jlbMam)
+                        .addComponent(jButton3)
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1))
+                    .addComponent(jButton6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbMam)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -365,61 +402,15 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        getMamtB();
-        System.out.println("View.Tbhh_Jpn.jButton2ActionPerformed()");
-        System.out.println(listMamTb.size());
-        jlbMam.setText(viTriMam+"");
-        this.jpnKe.setLayout(new GridLayout(listMamTb.size(), 1, 0, 5));
-        System.out.println("Tạo thành công GirdLayout");
-        for (MamTrungBay mamTrungBay : listMamTb) { 
-              System.out.println("Chạy vòng lặp");
-            SanPham sp = new SanPham();
-            sp= sanPhamDAO.selectById(mamTrungBay.getBarcode());
-            System.out.println(sp.getBarcode());
-            System.out.println("Chạy vòng lặp1");
-//        JPanel jPanel = new JPanel();
-        //Jpn_ViTriHangHoa viTri = new Jpn_ViTriHangHoa();
-        System.out.println("Chạy vòng lặp2");
-        Jpn_ViTriHangHoa jpn_ViTriHangHoa = new Jpn_ViTriHangHoa();
-        System.out.println("Chạy vòng lặp3");
-        jpn_ViTriHangHoa.setSoKe(mamTrungBay.getSoKe()+"");
-        System.out.println("Chạy vòng lặp4");
-        jpn_ViTriHangHoa.setViTri(mamTrungBay.getViTri()+"");
-        System.out.println("Chạy vòng lặp5");
-        jpn_ViTriHangHoa.setSoLuongTB(mamTrungBay.getTrungBay()+"");
-        System.out.println("Chạy vòng lặp6");
-        jpn_ViTriHangHoa.setTonTaiCH("0");// cần update
-        System.out.println("Chạy vòng lặp7");
-        jpn_ViTriHangHoa.setTenSanPham(sp.getTenSP());
-        System.out.println("Chạy vòng lặp8");
-        jpn_ViTriHangHoa.setGiaBan(sp.getDonGia()+"");
-        System.out.println("Chạy vòng lặp9");
-        jpn_ViTriHangHoa.setBarcode(mamTrungBay.getBarcode());
-        System.out.println("Chạy vòng lặp10");
-        String sRcData = sp.getHinhAnh();
-            System.out.println("View.Tbhh_Jpn.jButton2ActionPerformed()"+sp.getHinhAnh());
-        sRcData =sRcData.replace('/', '\\');
-       String sRc = URL + sRcData;
-        jpn_ViTriHangHoa.setImage(sRc);
-        System.out.println("Chạy vòng lặp11");
-        this.jpnKe.add(jpn_ViTriHangHoa);
-        System.out.println("Chạy vòng lặp12");
-        
-        }
-        this.jpnKe.revalidate();
-            this.jpnKe.repaint();
-        //
-
-          
-            
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
         this.jpnKe.removeAll();
-         this.jpnKe.revalidate();
-            this.jpnKe.repaint();
-    }//GEN-LAST:event_jButton5ActionPerformed
+        KeTrungBay keTrungBay = new KeTrungBay();
+        keTrungBay = keTrungBayDAO.selectById(Integer.parseInt(txtSoKe.getText()));
+        if (keTrungBay == null) {
+            MsgBox.alert(null, "Vui lòng kiểm tra lại số kệ");
+        } else {
+            XemMamTrungBay();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtTiemKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTiemKiemKeyPressed
         // TODO add your handling code here:
@@ -429,14 +420,63 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtTiemKiemKeyPressed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        this.jpnKe.removeAll();
+        if (viTriMam >= 1 && viTriMam < 5) {
+            viTriMam++;
+            XemMamTrungBay();
+        } else if (viTriMam == 5) {
+            viTriMam = 1;
+            XemMamTrungBay();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.jpnKe.removeAll();
+        if (viTriMam <= 5 && viTriMam > 1) {
+            viTriMam--;
+            XemMamTrungBay();
+        } else if (viTriMam == 1) {
+            viTriMam = 5;
+            XemMamTrungBay();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        List<MamTrungBay> mamTrungBays = new ArrayList<>();
+        mamTrungBays = mamTrungBayDAO.getSanPhamTrenKe(Integer.parseInt(txtSoKe.getText()));
+        System.out.println(mamTrungBays.size());
+        for (MamTrungBay mamTrungBay : mamTrungBays) {
+            InTemaGiaSanPham(mamTrungBay.getBarcode());
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void txtSoKeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoKeKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            this.jpnKe.removeAll();
+            KeTrungBay keTrungBay = new KeTrungBay();
+            keTrungBay = keTrungBayDAO.selectById(Integer.parseInt(txtSoKe.getText()));
+            if (keTrungBay == null) {
+                MsgBox.alert(null, "Vui lòng kiểm tra lại số kệ");
+            } else {
+                XemMamTrungBay();
+            }
+        }
+    }//GEN-LAST:event_txtSoKeKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
@@ -465,29 +505,30 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
     private javax.swing.JTextField txtSoKe;
     private javax.swing.JTextField txtTiemKiem;
     // End of variables declaration//GEN-END:variables
-
+    KeTrungBayDAO keTrungBayDAO = new KeTrungBayDAO();
     SanPhamDAO sanPhamDAO = new SanPhamDAO();
     MamTrungBayDAO mamTrungBayDAO = new MamTrungBayDAO();
-    SanPham sanPham= new SanPham();
+    SanPham sanPham = new SanPham();
     List<MamTrungBay> listMamTb = new ArrayList<>();
-    int viTriMam = 4;
+    int viTriMam = 1;
     String URL = "C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\";
-    public void getViTriSanPham(){
-   MamTrungBay mamTrungBay = new MamTrungBay();
-   mamTrungBay = mamTrungBayDAO.selectByBarcode(txtTiemKiem.getText());
+
+    public void getViTriSanPham() {
+        MamTrungBay mamTrungBay = new MamTrungBay();
+        mamTrungBay = mamTrungBayDAO.selectByBarcode(txtTiemKiem.getText());
         System.out.println("View.Tbhh_Jpn.getViTriSanPham()");
-   sanPham = sanPhamDAO.selectById(mamTrungBay.getBarcode());
-   jlbSoKe.setText(mamTrungBay.getSoKe()+"");
-   jlbSoMam.setText(mamTrungBay.getSoMam()+"");
-   jlbViTri.setText(mamTrungBay.getViTri()+"");
-   jlbSoLuong.setText("0");
-   jlbTrungBay.setText(mamTrungBay.getTrungBay()+"");
-   jlbTonKho.setText("0");
-   jlbBarcode.setText(mamTrungBay.getBarcode());
-   jlbGiaSP.setText(sanPham.getDonGia()+" VND");
-   jblTenSanPham.setText(sanPham.getTenSP());
-   //
-   String sRcImage = URL + sanPham.getHinhAnh();
+        sanPham = sanPhamDAO.selectById(mamTrungBay.getBarcode());
+        jlbSoKe.setText(mamTrungBay.getSoKe() + "");
+        jlbSoMam.setText(mamTrungBay.getSoMam() + "");
+        jlbViTri.setText(mamTrungBay.getViTri() + "");
+        jlbSoLuong.setText("0");
+        jlbTrungBay.setText(mamTrungBay.getTrungBay() + "");
+        jlbTonKho.setText("0");
+        jlbBarcode.setText(mamTrungBay.getBarcode());
+        jlbGiaSP.setText(sanPham.getDonGia() + " VND");
+        jblTenSanPham.setText(sanPham.getTenSP());
+        //
+        String sRcImage = URL + sanPham.getHinhAnh();
         ImageIcon imc = new ImageIcon(sRcImage);
         System.out.println(sRcImage);
         // btnHa.setIcon(imc);
@@ -496,8 +537,54 @@ public class Tbhh_Jpn extends javax.swing.JPanel {
         ImageIcon icon = new ImageIcon(newImg);
         jlbHinhAnh.setIcon(icon);
     }
-    public List<MamTrungBay> getMamtB(){
-        
-       listMamTb = mamTrungBayDAO.getMamTB(Integer.parseInt(txtSoKe.getText()), viTriMam);
-    return listMamTb;}
+
+    public List<MamTrungBay> getMamtB() {
+
+        listMamTb = mamTrungBayDAO.getMamTB(Integer.parseInt(txtSoKe.getText()), viTriMam);
+        return listMamTb;
+    }
+
+    public void XemMamTrungBay() {
+        getMamtB();
+        System.out.println(listMamTb.size());
+        jlbMam.setText(viTriMam + "");
+        this.jpnKe.setLayout(new GridLayout(listMamTb.size(), 1, 0, 5));
+        for (MamTrungBay mamTrungBay : listMamTb) {
+            SanPham sp = new SanPham();
+            sp = sanPhamDAO.selectById(mamTrungBay.getBarcode());
+            System.out.println(sp.getBarcode());
+            Jpn_ViTriHangHoa jpn_ViTriHangHoa = new Jpn_ViTriHangHoa();
+            jpn_ViTriHangHoa.setSoKe(mamTrungBay.getSoKe() + "");
+            jpn_ViTriHangHoa.setViTri(mamTrungBay.getViTri() + "");
+            jpn_ViTriHangHoa.setSoLuongTB(mamTrungBay.getTrungBay() + "");
+            jpn_ViTriHangHoa.setTonTaiCH("0");// cần update
+            jpn_ViTriHangHoa.setTenSanPham(sp.getTenSP());
+            jpn_ViTriHangHoa.setGiaBan(sp.getDonGia() + "");
+            jpn_ViTriHangHoa.setBarcode(mamTrungBay.getBarcode());
+            String sRcData = sp.getHinhAnh();
+            sRcData = sRcData.replace('/', '\\');
+            String sRc = URL + sRcData;
+            jpn_ViTriHangHoa.setImage(sRc);
+            this.jpnKe.add(jpn_ViTriHangHoa);
+        }
+        this.jpnKe.revalidate();
+        this.jpnKe.repaint();
+    }
+
+    public void InTemaGiaSanPham(String barcode) {
+
+        try {
+            Hashtable map = new Hashtable();
+            JasperReport rpt = JasperCompileManager.compileReport("C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\Report\\TeamGia.jrxml");
+            map.put("Barcode", barcode);
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=TGSTeam", "sa", "123");
+            JasperPrint p = JasperFillManager.fillReport(rpt, map, conn);
+            // JasperViewer.viewReport(p, false); // Hiển thị file PDF
+            JasperPrintManager.printReport(p, false);// Gửi Report đến máy in    
+        } catch (JRException ex) {
+            Logger.getLogger(View_Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(View_Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
