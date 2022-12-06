@@ -19,7 +19,7 @@ public class HoaDonCTDAO extends TGSTeamDAO<HoaDonCT, String> {
 
     String INSERT_SQL = "INSERT INTO HoaDonCT(MaHD,Barcode,SoLuong,ThanhTien) VALUES(?,?,?,?)";
     //String UPDATE_SQL = "UPDATE NhanVien SET MatKhau = ?,HoTen = ?, VaiTro = ? WHERE MaNV = ?";
-    //String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNV = ?";
+    String DELETE_SQL = "DELETE FROM HoaDonCT WHERE MaHD = ?";
     String SELECT_ALL_SQL = "SELECT * FROM HoaDonCT";
     String SELECT_BY_ID_SQL = "SELECT * FROM HoaDonCT WHERE MaHD = ?";
 
@@ -35,7 +35,7 @@ public class HoaDonCTDAO extends TGSTeamDAO<HoaDonCT, String> {
 
     @Override
     public void delete(String key) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcHepler.update(DELETE_SQL, key);
     }
 
     @Override
@@ -77,6 +77,10 @@ public class HoaDonCTDAO extends TGSTeamDAO<HoaDonCT, String> {
             throw new RuntimeException();
         }
     }
+    public void deleteWithBarcodeAndMaHD(String barcode, String maHD){
+    String sql = "Delete * from HoaDonCT where Barcode = ? and MaHD = ?";
+        jdbcHepler.update(sql, barcode,maHD);
+    }
    public List<HoaDonCT> selectByMaHD(String key) {
         List<HoaDonCT> list = this.selectBySql(SELECT_BY_ID_SQL, key);
         if (list.isEmpty()) {
@@ -85,5 +89,52 @@ public class HoaDonCTDAO extends TGSTeamDAO<HoaDonCT, String> {
         }
 
         return list;
+    }
+   // Nhập trả số lượng
+   public void UpdateSoLuong(Integer soLuong, String barcode, String maHD){
+   String sql = "update HoaDonCT set SoLuong = ? where barcode = ? and MaHD = ?";
+   jdbcHepler.update(sql,soLuong, barcode,maHD);
+   }
+   public Float getDoanhThuCungKy(String MaLoai, String NgayE) {
+        float doanhThu = 0;
+        String sql = "select SUM(HoaDonCT.ThanhTien)\n"
+                + "from HoaDon join HoaDonCT on HoaDon.MaHD = HoaDonCT.MaHD join SanPham on SanPham.Barcode = HoaDonCT.Barcode join LoaiSanPham on SanPham.MaLoaiSP = LoaiSanPham.MaLoaiSP\n"
+                + "where SanPham.MaLoaiSP = ? and HoaDon.NgayTao>DATEADD(month, DATEDIFF(month, -1, getdate()) - 2, 0)and HoaDon.NgayTao<?";
+        try {
+
+            ResultSet rs = jdbcHepler.query(sql, MaLoai,NgayE);
+
+            while (rs.next()) {
+                doanhThu = rs.getFloat(1);
+               
+            }
+            rs.getStatement().getConnection().close();
+            return doanhThu;
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new RuntimeException();
+            
+        }
+    }
+   public Float getDoanhThuHienTai(String MaLoai, String NgayE) {
+        float doanhThu = 0;
+        String sql = "select SUM(HoaDonCT.ThanhTien)\n"
+                + "from HoaDon join HoaDonCT on HoaDon.MaHD = HoaDonCT.MaHD join SanPham on SanPham.Barcode = HoaDonCT.Barcode join LoaiSanPham on SanPham.MaLoaiSP = LoaiSanPham.MaLoaiSP\n"
+                + "where SanPham.MaLoaiSP = ? and HoaDon.NgayTao>DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0)and HoaDon.NgayTao<?";
+        try {
+
+            ResultSet rs = jdbcHepler.query(sql, MaLoai,NgayE);
+
+            while (rs.next()) {
+                doanhThu = rs.getFloat(1);
+               
+            }
+            rs.getStatement().getConnection().close();
+            return doanhThu;
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new RuntimeException();
+            
+        }
     }
 }

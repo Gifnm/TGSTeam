@@ -121,7 +121,7 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
        public List<CaLamViecCT> getLichSuChamCong(String Date, Integer MaNV) {
            String sql = "Select *   from CaLamViecCT\n" +
 "Where (Ngay > CONVERT(VARCHAR(25),DATEADD(dd,-(DAY(GETDATE())-1),GETDATE()),101)   or Ngay = ?) and MaNV = ?\n" +
-"ORDER BY Ngay";
+"ORDER BY Ngay desc";
         List<CaLamViecCT> list = this.selectBySql(sql, Date, MaNV);
         if (list.isEmpty()) {
             return null;
@@ -131,7 +131,7 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
     }
        public List<CaLamViecCT> getCaLamViecChoXN() {
            String sql = "Select *   from CaLamViecCT\n" +
-"Where XacNhanQuanLy = '0' order by Ngay";
+"Where XacNhanQuanLy = '0' and ThoiGianChamCong is not null order by Ngay desc";
         List<CaLamViecCT> list = this.selectBySql(sql);
         if (list.isEmpty()) {
             return null;

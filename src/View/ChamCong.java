@@ -52,10 +52,21 @@ public class ChamCong extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jlbNgay = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         JpnChamCong = new javax.swing.JPanel();
 
+        setResizable(false);
+
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(102, 153, 255));
         jButton1.setText("Chấm tất cả");
+        jButton1.setBorder(null);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -70,18 +81,20 @@ public class ChamCong extends javax.swing.JFrame {
         jlbNgay.setForeground(new java.awt.Color(153, 153, 255));
         jlbNgay.setText("\"Ngày\"");
 
-        JpnChamCong.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         javax.swing.GroupLayout JpnChamCongLayout = new javax.swing.GroupLayout(JpnChamCong);
         JpnChamCong.setLayout(JpnChamCongLayout);
         JpnChamCongLayout.setHorizontalGroup(
             JpnChamCongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 542, Short.MAX_VALUE)
+            .addGap(0, 448, Short.MAX_VALUE)
         );
         JpnChamCongLayout.setVerticalGroup(
             JpnChamCongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 185, Short.MAX_VALUE)
         );
+
+        jScrollPane2.setViewportView(JpnChamCong);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,9 +110,9 @@ public class ChamCong extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jlbNgay, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
-            .addComponent(JpnChamCong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
+            .addComponent(jScrollPane2)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,13 +123,31 @@ public class ChamCong extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jlbNgay)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JpnChamCong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         for (CaLamViecCT caLamViecCT : List) {
+         caLamViecCT.setThoiGianChamCong(LayTime());
+         dao.updateTime(caLamViecCT);
+         jpn_ChamCong1.getBtnChamCong().setLabel("đã chấm");
+         jpn_ChamCong1.setEnabled(false);
+         jpn_ChamCong2.getBtnChamCong().setLabel("đã chấm");
+         jpn_ChamCong2.setEnabled(false);
+         jpn_ChamCong3.getBtnChamCong().setLabel("đã chấm");
+         jpn_ChamCong3.setEnabled(false);
+         jpn_ChamCong4.getBtnChamCong().setLabel("đã chấm");
+         jpn_ChamCong4.setEnabled(false);
+         jpn_ChamCong5.getBtnChamCong().setLabel("đã chấm");
+         jpn_ChamCong5.setEnabled(false);
+         }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,6 +189,7 @@ public class ChamCong extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel jlbNgay;
     // End of variables declaration//GEN-END:variables
 public void innit() {
@@ -166,101 +198,104 @@ public void innit() {
         NhanVien nv = new NhanVien();
         nv = Auth.user;
         List = dao.selectByDateAndMaNV(LayNgay(), nv.getMaNV());
-        this.JpnChamCong.setLayout(new GridLayout(List.size(), 2, 10, 10));
+        this.JpnChamCong.setLayout(new GridLayout(List.size(), 1, 10, 10));
         jlbNgay.setText(LayNgay());
         for (CaLamViecCT caLamViecCT : List) {
-            this.JpnChamCong.add(new Label(caLamViecCT.getMaCaLV()));
             if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA1")) {
-                this.JpnChamCong.add(chamCong1);
+
+                this.JpnChamCong.add(jpn_ChamCong1);
+                jpn_ChamCong1.getJlbChamCong().setText("CA1");
                 if (caLamViecCT.getThoiGianChamCong() != null) {
-                    // this.JpnChamCong.add(new Button("Đã chấm"));
-                    chamCong1.setLabel("Đã chấm");
-                    chamCong1.setEnabled(false);
+                    jpn_ChamCong1.getBtnChamCong().setLabel("Đã chấm");
+                    jpn_ChamCong1.getBtnChamCong().setEnabled(false);
                 } else {
 
-                    chamCong1.addActionListener(new ActionListener() {
+                    jpn_ChamCong1.getBtnChamCong().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-
-                            chamCong1.setEnabled(false);
+                            jpn_ChamCong1.getBtnChamCong().setEnabled(false);
+                            //chamCong1.setEnabled(false);
+                            jpn_ChamCong1.getBtnChamCong().setLabel("Đã chấm");
                             caLamViecCT.setThoiGianChamCong(LayTime());
                             dao.updateTime(caLamViecCT);
                         }
                     });
                 }
             } else if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA2")) {
-                this.JpnChamCong.add(chamCong2);
+                this.JpnChamCong.add(jpn_ChamCong2);
+                jpn_ChamCong2.getJlbChamCong().setText("CA2");
                 if (caLamViecCT.getThoiGianChamCong() != null) {
-//                this.JpnChamCong.add(new Button("Đã chấm"));
-                    chamCong2.setLabel("Đã chấm");
-                    chamCong2.setEnabled(false);
+                    jpn_ChamCong2.getBtnChamCong().setLabel("Đã chấm");
+                    jpn_ChamCong2.getBtnChamCong().setEnabled(false);
                 } else {
 
-                    chamCong2.addActionListener(new ActionListener() {
+                    jpn_ChamCong2.getBtnChamCong().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-
+                            jpn_ChamCong2.getBtnChamCong().setEnabled(false);
+                            //chamCong1.setEnabled(false);
+                            jpn_ChamCong2.getBtnChamCong().setLabel("Đã chấm");
                             caLamViecCT.setThoiGianChamCong(LayTime());
                             dao.updateTime(caLamViecCT);
-                            chamCong2.setLabel("Đã chấm");
-                            chamCong2.setEnabled(false);
                         }
                     });
                 }
             } else if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA3")) {
-                this.JpnChamCong.add(chamCong3);
+                jpn_ChamCong3.getJlbChamCong().setText("CA3");
+                this.JpnChamCong.add(jpn_ChamCong3);
                 if (caLamViecCT.getThoiGianChamCong() != null) {
-                    // this.JpnChamCong.add(new Button("Đã chấm"));
-                    chamCong3.setLabel("Đã chấm");
-                    chamCong3.setEnabled(false);
+                    jpn_ChamCong3.getBtnChamCong().setLabel("Đã chấm");
+                    jpn_ChamCong3.getBtnChamCong().setEnabled(false);
                 } else {
 
-                    chamCong3.addActionListener(new ActionListener() {
+                    jpn_ChamCong3.getBtnChamCong().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            chamCong3.setName("Đã chấm");
+                            jpn_ChamCong3.getBtnChamCong().setEnabled(false);
+                            //chamCong1.setEnabled(false);
+                            jpn_ChamCong3.getBtnChamCong().setLabel("Đã chấm");
                             caLamViecCT.setThoiGianChamCong(LayTime());
                             dao.updateTime(caLamViecCT);
-                            chamCong3.setLabel("Đã chấm");
-                            chamCong3.setEnabled(false);
                         }
                     });
                 }
             } else if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA4")) {
-                this.JpnChamCong.add(chamCong4);
+                // this.JpnChamCong.add(chamCong4);
+                this.JpnChamCong.add(jpn_ChamCong4);
+                jpn_ChamCong4.getJlbChamCong().setText("CA4");
                 if (caLamViecCT.getThoiGianChamCong() != null) {
-                    // this.JpnChamCong.add(new Button("Đã chấm"));
-                    chamCong4.setLabel("Đã chấm");
-                    chamCong4.setEnabled(false);
+                    jpn_ChamCong4.getBtnChamCong().setLabel("Đã chấm");
+                    jpn_ChamCong4.getBtnChamCong().setEnabled(false);
                 } else {
 
-                    chamCong4.addActionListener(new ActionListener() {
+                    jpn_ChamCong4.getBtnChamCong().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            chamCong4.setName("Đã chấm");
+                            jpn_ChamCong4.getBtnChamCong().setEnabled(false);
+                            //chamCong1.setEnabled(false);
+                            jpn_ChamCong4.getBtnChamCong().setLabel("Đã chấm");
                             caLamViecCT.setThoiGianChamCong(LayTime());
                             dao.updateTime(caLamViecCT);
-                            chamCong4.setLabel("Đã chấm");
-                            chamCong4.setEnabled(false);
                         }
                     });
                 }
             } else if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA5")) {
-                this.JpnChamCong.add(chamCong5);
+
+                this.JpnChamCong.add(jpn_ChamCong5);
+                jpn_ChamCong5.getJlbChamCong().setText("CA5");
                 if (caLamViecCT.getThoiGianChamCong() != null) {
-                    // this.JpnChamCong.add(new Button("Đã chấm"));
-                    chamCong5.setLabel("Đã chấm");
-                    chamCong5.setEnabled(false);
+                    jpn_ChamCong5.getBtnChamCong().setLabel("Đã chấm");
+                    jpn_ChamCong5.getBtnChamCong().setEnabled(false);
                 } else {
 
-                    chamCong5.addActionListener(new ActionListener() {
+                    jpn_ChamCong5.getBtnChamCong().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            chamCong5.setName("Đã chấm");
+                            jpn_ChamCong5.getBtnChamCong().setEnabled(false);
+                            //chamCong1.setEnabled(false);
+                            jpn_ChamCong5.getBtnChamCong().setLabel("Đã chấm");
                             caLamViecCT.setThoiGianChamCong(LayTime());
                             dao.updateTime(caLamViecCT);
-                            chamCong5.setLabel("Đã chấm");
-                            chamCong5.setEnabled(false);
                         }
                     });
                 }
@@ -275,6 +310,11 @@ public void innit() {
     Button chamCong3 = new Button("Chấm Ca 3");
     Button chamCong4 = new Button("Chấm Ca 4");
     Button chamCong5 = new Button("Chấm Ca 5");
+    Jpn_ChamCong jpn_ChamCong1 = new Jpn_ChamCong();
+    Jpn_ChamCong jpn_ChamCong2 = new Jpn_ChamCong();
+    Jpn_ChamCong jpn_ChamCong3 = new Jpn_ChamCong();
+    Jpn_ChamCong jpn_ChamCong4 = new Jpn_ChamCong();
+    Jpn_ChamCong jpn_ChamCong5 = new Jpn_ChamCong();
 
     public String LayNgay() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

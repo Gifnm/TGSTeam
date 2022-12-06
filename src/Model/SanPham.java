@@ -19,6 +19,8 @@ public class SanPham {
  private String TenSP;
  private Float GiaMuon;
  private Float DonGia;
+ private Float giaNhap;
+ private Integer VAT;
  private String MaLoaiSP;
  private Integer MaCH;
  private String HinhAnh;
@@ -40,6 +42,21 @@ public class SanPham {
         this.HinhAnh = HinhAnh;
         this.SoLuongTrungBay = SoLuongTrungBay;
         this.SoLuongBan = 1;
+    }
+
+    public SanPham(Integer ID, String Barcode, String TenSP, Float GiaMuon, Float DonGia, Float giaNhap, Integer VAT, String MaLoaiSP, Integer MaCH, String HinhAnh, Integer SoLuongTrungBay, int SoLuongBan) {
+        this.ID = ID;
+        this.Barcode = Barcode;
+        this.TenSP = TenSP;
+        this.GiaMuon = GiaMuon;
+        this.DonGia = DonGia;
+        this.giaNhap = giaNhap;
+        this.VAT = VAT;
+        this.MaLoaiSP = MaLoaiSP;
+        this.MaCH = MaCH;
+        this.HinhAnh = HinhAnh;
+        this.SoLuongTrungBay = SoLuongTrungBay;
+        this.SoLuongBan = SoLuongBan;
     }
 
     public Integer getID() {
@@ -120,6 +137,22 @@ public class SanPham {
 
     public void setSoLuongBan(int SoLuongBan) {
         this.SoLuongBan = SoLuongBan;
+    }
+
+    public Float getGiaNhap() {
+        return giaNhap;
+    }
+
+    public void setGiaNhap(Float giaNhap) {
+        this.giaNhap = giaNhap;
+    }
+
+    public Integer getVAT() {
+        return VAT;
+    }
+
+    public void setVAT(Integer VAT) {
+        this.VAT = VAT;
     }
     
     

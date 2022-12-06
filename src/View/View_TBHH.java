@@ -1,18 +1,36 @@
 package View;
 
 import DAO.CaLamViecCTDAO;
+import DAO.SanPhamDAO;
 import Model.CaLamViecCT;
 import Model.NhanVien;
+import Model.SanPham;
 import com.edysys.utils.Auth;
 import java.awt.CardLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -24,18 +42,22 @@ import javax.swing.UIManager;
  */
 public class View_TBHH extends javax.swing.JFrame {
 
+    DefaultTableModel modelTemGia = new DefaultTableModel();
+    private ArrayList<SanPham> listTemGia = new ArrayList<>();
     /**
      * Creates new form TBHH
      */
     CardLayout card = new CardLayout();
-
+    
     public View_TBHH() {
-
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Image img1 = Toolkit.getDefaultToolkit().createImage("C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\icon\\bird.png");
         this.setIconImage(img1);
         this.jpnCard.setLayout(card);
         this.setLocationRelativeTo(null);
+        modelTemGia = (DefaultTableModel) jtblInTemGia.getModel();
+        jtblInTemGia.setModel(modelTemGia);
     }
 
     /**
@@ -48,6 +70,12 @@ public class View_TBHH extends javax.swing.JFrame {
     private void initComponents() {
 
         jSeparator4 = new javax.swing.JSeparator();
+        jdlInTemGia = new javax.swing.JDialog();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtblInTemGia = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        txtBarcode = new javax.swing.JTextField();
+        jButton5 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         jButton4 = new javax.swing.JButton();
@@ -70,6 +98,83 @@ public class View_TBHH extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+
+        jtblInTemGia.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jtblInTemGia.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Tên sản phẩm", "Đơn giá"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jtblInTemGia.setGridColor(new java.awt.Color(153, 204, 255));
+        jtblInTemGia.setRowHeight(20);
+        jScrollPane1.setViewportView(jtblInTemGia);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        txtBarcode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBarcodeKeyPressed(evt);
+            }
+        });
+
+        jButton5.setText("In");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5))
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jdlInTemGiaLayout = new javax.swing.GroupLayout(jdlInTemGia.getContentPane());
+        jdlInTemGia.getContentPane().setLayout(jdlInTemGiaLayout);
+        jdlInTemGiaLayout.setHorizontalGroup(
+            jdlInTemGiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jdlInTemGiaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jdlInTemGiaLayout.setVerticalGroup(
+            jdlInTemGiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jdlInTemGiaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -173,6 +278,11 @@ public class View_TBHH extends javax.swing.JFrame {
         jMenu2.add(jMenuItem8);
 
         jMenuItem9.setText("In tem giá");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem9);
 
         jMenuBar1.add(jMenu2);
@@ -223,18 +333,13 @@ public class View_TBHH extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        //java.awt.CardLayout cardLayout = (java.awt.CardLayout) this.getContentPane().getLayout();
-//         TrungBayHHHome tbhh = new TrungBayHHHome();
-//         cardLayout.addLayoutComponent(tbhh, "TBHHHome");
-//        cardLayout.show(this.getContentPane(), "TBHHHome");
-        System.out.println("k1");
+
         try {
             jpnCard.add(new Tbhh_Jpn(), "Add");
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        
         card.show(jpnCard, "Add");
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -288,6 +393,43 @@ public class View_TBHH extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+        this.jdlInTemGia.setVisible(true);
+        this.jdlInTemGia.setLocationRelativeTo(null);
+        this.jdlInTemGia.setSize(319, 440);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void txtBarcodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBarcodeKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            getSanPham();
+            txtBarcode.setText("");
+            
+        }
+    }//GEN-LAST:event_txtBarcodeKeyPressed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        for (SanPham sp : listTemGia) {
+            try {
+                Hashtable map = new Hashtable();
+                JasperReport rpt = JasperCompileManager.compileReport("C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\Report\\TeamGia.jrxml");
+                map.put("Barcode", sp.getBarcode());
+                Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=TGSTeam", "sa", "123");
+                JasperPrint p = JasperFillManager.fillReport(rpt, map, conn);
+                // JasperViewer.viewReport(p, false); // Hiển thị file PDF
+                JasperPrintManager.printReport(p, false);// Gửi Report đến máy in    
+            } catch (JRException ex) {
+                Logger.getLogger(View_Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(View_Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        listTemGia.removeAll(listTemGia);
+        modelTemGia.setRowCount(0);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -330,6 +472,7 @@ public class View_TBHH extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -344,17 +487,34 @@ public class View_TBHH extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JDialog jdlInTemGia;
     private javax.swing.JPanel jpnCard;
+    private javax.swing.JTable jtblInTemGia;
+    private javax.swing.JTextField txtBarcode;
     // End of variables declaration//GEN-END:variables
+    SanPhamDAO sanPhamDAO = new SanPhamDAO();
 
     public String LayNgay() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         String timeNow = dateFormat.format(cal.getTime());
         return timeNow;
+    }
+    
+    private void getSanPham() {
+        SanPham sanPham = new SanPham();
+        sanPham = sanPhamDAO.selectById(txtBarcode.getText());
+        listTemGia.add(sanPham);
+        modelTemGia.setRowCount(0);
+        for (SanPham sanPham1 : listTemGia) {
+            modelTemGia.addRow(new Object[]{sanPham.getTenSP(), sanPham.getDonGia()});
+        }
+        
     }
 }

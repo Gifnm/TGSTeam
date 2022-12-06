@@ -6,8 +6,10 @@ package View;
 
 import DAO.CaLamViecCTDAO;
 import DAO.CaLamViecDAO;
+import DAO.CuaHangDAO;
 import Model.CaLamViec;
 import Model.CaLamViecCT;
+import Model.CuaHang;
 import Model.NhanVien;
 import com.edysys.utils.Auth;
 import java.awt.Button;
@@ -34,8 +36,10 @@ import javax.swing.table.DefaultTableModel;
  * @author ASUS
  */
 public class View_LichSuChamCong extends javax.swing.JFrame {
-     DefaultTableModel modelLsChamCham = new DefaultTableModel();
-     List<CaLamViecCT> listLichSuChamC= new ArrayList<>();
+
+    DefaultTableModel modelLsChamCham = new DefaultTableModel();
+    List<CaLamViecCT> listLichSuChamC = new ArrayList<>();
+
     /**
      * Creates new form View_LichSuChamCong
      */
@@ -44,11 +48,11 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         Image img1 = Toolkit.getDefaultToolkit().createImage("C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\icon\\bird.png");
         this.setIconImage(img1);
-         AddChamCong();
-       modelLsChamCham = (DefaultTableModel) jtbLSChamCong.getModel();
-       FillToTable();
-       jlb_LsChamCong_Thang.setText("Tháng "+LayThang());
-       jtbLSChamCong.setDefaultRenderer(Object.class, new RenderTablaPrestamos());
+        AddChamCong();
+        modelLsChamCham = (DefaultTableModel) jtbLSChamCong.getModel();
+        FillToTable();
+        jlb_LsChamCong_Thang.setText("Tháng " + LayThang());
+        jtbLSChamCong.setDefaultRenderer(Object.class, new RenderTablaPrestamos());
     }
 
     /**
@@ -204,13 +208,13 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-        
-       // AddChamCong();
+
+        // AddChamCong();
     }//GEN-LAST:event_formComponentShown
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-       // AddChamCong();
+        // AddChamCong();
     }//GEN-LAST:event_formWindowOpened
 
     /**
@@ -260,139 +264,138 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
     private javax.swing.JTable jtbLSChamCong;
     // End of variables declaration//GEN-END:variables
 CaLamViecCTDAO daoCaLamCT = new CaLamViecCTDAO();
-CaLamViecDAO caLamViecDAO = new CaLamViecDAO();
+    CaLamViecDAO caLamViecDAO = new CaLamViecDAO();
+    CuaHangDAO cuaHangDAO = new CuaHangDAO();
 // Hiển thị dữ liệu lên bảng chấm công    
-    public void FillToTable(){
-        System.out.println("View.View_LichSuChamCong.FillToTable()");
-    listLichSuChamC = daoCaLamCT.getLichSuChamCong(LayNgay(), Auth.user.getMaNV());
-        System.out.println("View.View_LichSuChamCong.FillToTable()"+listLichSuChamC.size());
-    CaLamViec caLamViec= new CaLamViec();
-    modelLsChamCham.setRowCount(0);
+
+    public void FillToTable() {
+        listLichSuChamC = daoCaLamCT.getLichSuChamCong(LayNgay(), Auth.user.getMaNV());
+        CaLamViec caLamViec = new CaLamViec();
+        modelLsChamCham.setRowCount(0);
         for (CaLamViecCT caLamViecCT : listLichSuChamC) {
-            System.out.println("2");
+            CuaHang cuaHang = new CuaHang();
+            cuaHang = cuaHangDAO.selectById(Auth.user.getMaCH());
             caLamViec = caLamViecDAO.selectById(caLamViecCT.getMaCaLV());
-            modelLsChamCham.addRow(new Object[]{caLamViecCT.getNgay(),"FOly",caLamViecCT.getMaCaLV(),caLamViec.getThoiGianBatDau()+"-"+caLamViec.getThoiGianKetThuc(),caLamViecCT.getThoiGianChamCong()==null?"Chưa chấm":caLamViecCT.getThoiGianChamCong(),caLamViecCT.getXacNhanQuanLy()==false?"Chưa xác nhận":"Đã xác nhận",caLamViecCT.getXacNhanQuanLy()==false?"0/"+caLamViec.getSoGioCong():caLamViecCT.getGioCongXacNhan()+"/"+caLamViec.getSoGioCong()});
+            modelLsChamCham.addRow(new Object[]{caLamViecCT.getNgay(), cuaHang.getDiaChi(), caLamViecCT.getMaCaLV(), caLamViec.getThoiGianBatDau() + "-" + caLamViec.getThoiGianKetThuc(), caLamViecCT.getThoiGianChamCong() == null ? "Chưa chấm" : caLamViecCT.getThoiGianChamCong(), caLamViecCT.getXacNhanQuanLy() == false ? "Chưa xác nhận" : "Đã xác nhận", caLamViecCT.getXacNhanQuanLy() == false ? "0/" + caLamViec.getSoGioCong() : caLamViecCT.getGioCongXacNhan() + "/" + caLamViec.getSoGioCong()});
         }
-}
+    }
     // Hiển thị cửa sổ chấm công
-public void AddChamCong(){
-    System.out.println("View.View_LichSuChamCong.AddChamCong()");
-    NhanVien nv = new NhanVien();
+
+    public void AddChamCong() {
+        NhanVien nv = new NhanVien();
         nv = Auth.user;
         List = dao.selectByDateAndMaNV(LayNgay(), nv.getMaNV());
         this.jpnChamCong.setLayout(new GridLayout(List.size(), 2, 10, 10));
-       
+
         for (CaLamViecCT caLamViecCT : List) {
             this.jpnChamCong.add(new Label(caLamViecCT.getMaCaLV()));
             if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA1")) {
                 this.jpnChamCong.add(chamCong1);
-                if(caLamViecCT.getThoiGianChamCong()!=null){
-               // this.JpnChamCong.add(new Button("Đã chấm"));
-               FillToTable();
-               chamCong1.setLabel("Đã chấm");
-               chamCong1.setEnabled(false);
+                if (caLamViecCT.getThoiGianChamCong() != null) {
+                    // this.JpnChamCong.add(new Button("Đã chấm"));
+                    FillToTable();
+                    chamCong1.setLabel("Đã chấm");
+                    chamCong1.setEnabled(false);
+                } else {
+
+                    chamCong1.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            chamCong1.setEnabled(false);
+                            caLamViecCT.setThoiGianChamCong(LayTime());
+                            dao.updateTime(caLamViecCT);
+                        }
+                    });
                 }
-                else{
-                    
-                chamCong1.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                  
-                        chamCong1.setEnabled(false);
-                        caLamViecCT.setThoiGianChamCong(LayTime());
-                        dao.updateTime(caLamViecCT);
-                    }
-                });}
             } else if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA2")) {
-                 this.jpnChamCong.add(chamCong2);
-                   if(caLamViecCT.getThoiGianChamCong()!=null){
+                this.jpnChamCong.add(chamCong2);
+                if (caLamViecCT.getThoiGianChamCong() != null) {
 //                this.JpnChamCong.add(new Button("Đã chấm"));
- FillToTable();
-chamCong2.setLabel("Đã chấm");
-               chamCong2.setEnabled(false);
+                    FillToTable();
+                    chamCong2.setLabel("Đã chấm");
+                    chamCong2.setEnabled(false);
+                } else {
+
+                    chamCong2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            caLamViecCT.setThoiGianChamCong(LayTime());
+                            dao.updateTime(caLamViecCT);
+                            FillToTable();
+                            chamCong2.setLabel("Đã chấm");
+                            chamCong2.setEnabled(false);
+                        }
+                    });
                 }
-                else{
-               
-                chamCong2.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                      
-                        caLamViecCT.setThoiGianChamCong(LayTime());
-                        dao.updateTime(caLamViecCT);
-                         FillToTable();
-                          chamCong2.setLabel("Đã chấm");
-                        chamCong2.setEnabled(false);
-                    }
-                });}
             } else if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA3")) {
-                 this.jpnChamCong.add(chamCong3);
-                   if(caLamViecCT.getThoiGianChamCong()!=null){
-               // this.JpnChamCong.add(new Button("Đã chấm"));
-                FillToTable();
-               chamCong3.setLabel("Đã chấm");
-               chamCong3.setEnabled(false);
+                this.jpnChamCong.add(chamCong3);
+                if (caLamViecCT.getThoiGianChamCong() != null) {
+                    // this.JpnChamCong.add(new Button("Đã chấm"));
+                    FillToTable();
+                    chamCong3.setLabel("Đã chấm");
+                    chamCong3.setEnabled(false);
+                } else {
+
+                    chamCong3.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            caLamViecCT.setThoiGianChamCong(LayTime());
+                            dao.updateTime(caLamViecCT);
+                            FillToTable();
+                            chamCong3.setLabel("Đã chấm");
+                            chamCong3.setEnabled(false);
+                        }
+                    });
                 }
-                else{
-                       
-               
-                chamCong3.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        
-                        caLamViecCT.setThoiGianChamCong(LayTime());
-                        dao.updateTime(caLamViecCT);
-                         FillToTable();
-                          chamCong3.setLabel("Đã chấm");
-                        chamCong3.setEnabled(false);
-                    }
-                });}
             } else if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA4")) {
-                  this.jpnChamCong.add(chamCong4);
-                   if(caLamViecCT.getThoiGianChamCong()!=null){
-               // this.JpnChamCong.add(new Button("Đã chấm"));
-                FillToTable();
-               chamCong4.setLabel("Đã chấm");
-               chamCong4.setEnabled(false);
+                this.jpnChamCong.add(chamCong4);
+                if (caLamViecCT.getThoiGianChamCong() != null) {
+                    // this.JpnChamCong.add(new Button("Đã chấm"));
+                    FillToTable();
+                    chamCong4.setLabel("Đã chấm");
+                    chamCong4.setEnabled(false);
+                } else {
+
+                    chamCong4.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            chamCong4.setName("Đã chấm");
+                            caLamViecCT.setThoiGianChamCong(LayTime());
+                            dao.updateTime(caLamViecCT);
+                            FillToTable();
+                            chamCong4.setLabel("Đã chấm");
+                            chamCong4.setEnabled(false);
+                        }
+                    });
                 }
-                else{
-              
-                chamCong4.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        chamCong4.setName("Đã chấm");
-                        caLamViecCT.setThoiGianChamCong(LayTime());
-                        dao.updateTime(caLamViecCT);
-                         FillToTable();
-                          chamCong4.setLabel("Đã chấm");
-                        chamCong4.setEnabled(false);
-                    }
-                });}
             } else if (caLamViecCT.getMaCaLV().equalsIgnoreCase("CA5")) {
-                 this.jpnChamCong.add(chamCong5);
-                   if(caLamViecCT.getThoiGianChamCong()!=null){
-               // this.JpnChamCong.add(new Button("Đã chấm"));
-               chamCong5.setLabel("Đã chấm");
-               chamCong5.setEnabled(false);
+                this.jpnChamCong.add(chamCong5);
+                if (caLamViecCT.getThoiGianChamCong() != null) {
+                    // this.JpnChamCong.add(new Button("Đã chấm"));
+                    chamCong5.setLabel("Đã chấm");
+                    chamCong5.setEnabled(false);
+                } else {
+
+                    chamCong5.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            chamCong5.setName("Đã chấm");
+                            caLamViecCT.setThoiGianChamCong(LayTime());
+                            dao.updateTime(caLamViecCT);
+                            chamCong5.setLabel("Đã chấm");
+                            chamCong5.setEnabled(false);
+                        }
+                    });
                 }
-                else{
-               
-                chamCong5.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        chamCong5.setName("Đã chấm");
-                        caLamViecCT.setThoiGianChamCong(LayTime());
-                        dao.updateTime(caLamViecCT);
-                          chamCong5.setLabel("Đã chấm");
-                        chamCong5.setEnabled(false);
-                    }
-                });}
             }
         }
-}
-List<CaLamViecCT> List = new ArrayList<>();
+    }
+    List<CaLamViecCT> List = new ArrayList<>();
     CaLamViecCTDAO dao = new CaLamViecCTDAO();
     Button chamCong1 = new Button("Chấm Ca 1");
-
     Button chamCong2 = new Button("Chấm Ca 2");
     Button chamCong3 = new Button("Chấm Ca 3");
     Button chamCong4 = new Button("Chấm Ca 4");
@@ -411,20 +414,22 @@ List<CaLamViecCT> List = new ArrayList<>();
         String timeNow = dateFormat.format(cal.getTime());
         return timeNow;
     }
+
     public String LayThang() {
         DateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
         Calendar cal = Calendar.getInstance();
         String timeNow = dateFormat.format(cal.getTime());
         return timeNow;
     }
-    public class RenderTablaPrestamos extends DefaultTableCellRenderer{
-@Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-    {
-        final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
-        return c;
-    }
 
-}
+    public class RenderTablaPrestamos extends DefaultTableCellRenderer {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+            return c;
+        }
+
+    }
 }

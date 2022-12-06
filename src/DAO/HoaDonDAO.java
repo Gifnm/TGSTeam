@@ -19,7 +19,7 @@ public class HoaDonDAO extends TGSTeamDAO<HoaDon, String> {
 
     String INSERT_SQL = "INSERT INTO HoaDon(MaHD,MaNV,NgayTao,TienMat,TienThoi,TongTien) VALUES(?,?,?,?,?,?)";
     // String UPDATE_SQL = "UPDATE NhanVien SET MatKhau = ?,HoTen = ?, VaiTro = ? WHERE MaNV = ?";
-    // String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNV = ?";
+    String DELETE_SQL = "DELETE FROM HoaDon WHERE MaHD = ?";
     String SELECT_ALL_SQL = "SELECT * FROM HoaDon order by STT desc";
     String SELECT_BY_ID_SQL = "SELECT * FROM HoaDon WHERE MaHD = ?";
 
@@ -35,7 +35,7 @@ public class HoaDonDAO extends TGSTeamDAO<HoaDon, String> {
 
     @Override
     public void delete(String key) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcHepler.update(DELETE_SQL, key);
     }
 
     @Override
@@ -79,14 +79,37 @@ public class HoaDonDAO extends TGSTeamDAO<HoaDon, String> {
             throw new RuntimeException();
         }
     }
+
     public List<HoaDon> selectHoaDonForToDay(String oh, String ooh) {
         String sql = "Select * from HoaDon where NgayTao > ? and NgayTao < ? order by STT desc";
-        List<HoaDon> list = this.selectBySql(sql, oh,ooh);
+        List<HoaDon> list = this.selectBySql(sql, oh, ooh);
         if (list.isEmpty()) {
 
             return null;
         }
 
         return list;
+    }
+
+    public Float getDoanhThuTheoNganhHang(String MaLoai, String NgayS, String NgayE) {
+        float doanhThu = 0;
+        String sql = "select SUM(HoaDonCT.ThanhTien)\n"
+                + "from HoaDon join HoaDonCT on HoaDon.MaHD = HoaDonCT.MaHD join SanPham on SanPham.Barcode = HoaDonCT.Barcode join LoaiSanPham on SanPham.MaLoaiSP = LoaiSanPham.MaLoaiSP\n"
+                + "where SanPham.MaLoaiSP = ? and HoaDon.NgayTao>? and HoaDon.NgayTao<?";
+        try {
+
+            ResultSet rs = jdbcHepler.query(sql, MaLoai,NgayS,NgayE);
+
+            while (rs.next()) {
+                doanhThu = rs.getFloat(1);
+               
+            }
+            rs.getStatement().getConnection().close();
+            return doanhThu;
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new RuntimeException();
+            
+        }
     }
 }

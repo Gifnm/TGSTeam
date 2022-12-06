@@ -68,10 +68,12 @@ String INSERT_SQL = "INSERT INTO NhanVien(MaNv,MatKhau,HoTen,VaiTro) VALUES(?,?,
                 entity.setTenSP(rs.getString(3));
                 entity.setGiaMuon(rs.getFloat(4));
                 entity.setDonGia(rs.getFloat(5));
-                entity.setMaLoaiSP(rs.getString(6));
-                entity.setMaCH(rs.getInt(7));
-                entity.setHinhAnh(rs.getString(8));
-                entity.setSoLuongTrungBay(rs.getInt(9));
+                entity.setGiaNhap(rs.getFloat(6));
+                entity.setVAT(rs.getInt(7));
+                entity.setMaLoaiSP(rs.getString(8));
+                entity.setMaCH(rs.getInt(9));
+                entity.setHinhAnh(rs.getString(10));
+                entity.setSoLuongTrungBay(rs.getInt(11));
                 list.add(entity);
 
             }
@@ -86,6 +88,11 @@ String INSERT_SQL = "INSERT INTO NhanVien(MaNv,MatKhau,HoTen,VaiTro) VALUES(?,?,
 		// TODO Auto-generated method stub
 		String SelectByKeyWork = "SELECT * FROM SanPham WHERE TenSP LIKE ?";
 		return this.selectBySql(SelectByKeyWork,"%"+KeyWork+"%");
+	}
+    public List<SanPham> selectBykeyBarcode(String keyBarcode) {
+		// TODO Auto-generated method stub
+		String SelectByKeyWork = "SELECT * FROM SanPham WHERE Barcode LIKE ?";
+		return this.selectBySql(SelectByKeyWork,keyBarcode+"%");
 	}
     
 }
