@@ -73,6 +73,8 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
         jlb_LsChamCong_Thang3 = new javax.swing.JLabel();
         jlb_GioCongXN = new javax.swing.JLabel();
         jlb_LsChamCong_Thang4 = new javax.swing.JLabel();
+        jlb_GioCongXN1 = new javax.swing.JLabel();
+        JlbGioCongPhanCa = new javax.swing.JLabel();
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -91,11 +93,11 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Ngày", "Cửa Hàng", "Ca", "Thời gian", "Thời gian chấm công", "Trạng thái", "Xác nhận"
+                "Ngày", "Cửa Hàng", "Ca", "Thời gian", "Thời gian chấm công", "Trạng thái", "Xác nhận", "Ghi chú"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -136,11 +138,19 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
 
         jlb_GioCongXN.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jlb_GioCongXN.setForeground(new java.awt.Color(255, 51, 102));
-        jlb_GioCongXN.setText("\"Gio cong\"");
+        jlb_GioCongXN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlb_GioCongXN.setText("0");
 
         jlb_LsChamCong_Thang4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jlb_LsChamCong_Thang4.setForeground(new java.awt.Color(255, 51, 102));
         jlb_LsChamCong_Thang4.setText("0");
+
+        jlb_GioCongXN1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jlb_GioCongXN1.setText("/");
+
+        JlbGioCongPhanCa.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        JlbGioCongPhanCa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JlbGioCongPhanCa.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,14 +161,19 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlb_LsChamCong_Thang, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jlb_LsChamCong_Thang1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlb_LsChamCong_Thang1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jlb_LsChamCong_Thang3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jlb_LsChamCong_Thang4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jlb_GioCongXN, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jlb_LsChamCong_Thang3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jlb_LsChamCong_Thang4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addComponent(jlb_GioCongXN, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlb_GioCongXN1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(JlbGioCongPhanCa, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,7 +183,9 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlb_LsChamCong_Thang1)
-                    .addComponent(jlb_GioCongXN))
+                    .addComponent(jlb_GioCongXN)
+                    .addComponent(jlb_GioCongXN1)
+                    .addComponent(JlbGioCongPhanCa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlb_LsChamCong_Thang3)
@@ -253,9 +270,11 @@ public class View_LichSuChamCong extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel JlbGioCongPhanCa;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jlb_GioCongXN;
+    private javax.swing.JLabel jlb_GioCongXN1;
     private javax.swing.JLabel jlb_LsChamCong_Thang;
     private javax.swing.JLabel jlb_LsChamCong_Thang1;
     private javax.swing.JLabel jlb_LsChamCong_Thang3;
@@ -270,14 +289,24 @@ CaLamViecCTDAO daoCaLamCT = new CaLamViecCTDAO();
 
     public void FillToTable() {
         listLichSuChamC = daoCaLamCT.getLichSuChamCong(LayNgay(), Auth.user.getMaNV());
+            float gioCongXacNhan = 0;
+        float gioCongPhanCa = 0;
         CaLamViec caLamViec = new CaLamViec();
         modelLsChamCham.setRowCount(0);
+     
         for (CaLamViecCT caLamViecCT : listLichSuChamC) {
             CuaHang cuaHang = new CuaHang();
             cuaHang = cuaHangDAO.selectById(Auth.user.getMaCH());
             caLamViec = caLamViecDAO.selectById(caLamViecCT.getMaCaLV());
-            modelLsChamCham.addRow(new Object[]{caLamViecCT.getNgay(), cuaHang.getDiaChi(), caLamViecCT.getMaCaLV(), caLamViec.getThoiGianBatDau() + "-" + caLamViec.getThoiGianKetThuc(), caLamViecCT.getThoiGianChamCong() == null ? "Chưa chấm" : caLamViecCT.getThoiGianChamCong(), caLamViecCT.getXacNhanQuanLy() == false ? "Chưa xác nhận" : "Đã xác nhận", caLamViecCT.getXacNhanQuanLy() == false ? "0/" + caLamViec.getSoGioCong() : caLamViecCT.getGioCongXacNhan() + "/" + caLamViec.getSoGioCong()});
+            modelLsChamCham.addRow(new Object[]{caLamViecCT.getNgay(), cuaHang.getDiaChi(), caLamViecCT.getMaCaLV(), caLamViec.getThoiGianBatDau() + "-" + caLamViec.getThoiGianKetThuc(), caLamViecCT.getThoiGianChamCong() == null ? "Chưa chấm" : caLamViecCT.getThoiGianChamCong(), caLamViecCT.getXacNhanQuanLy() == false ? "Chưa xác nhận" : "Đã xác nhận", caLamViecCT.getXacNhanQuanLy() == false ? "0/" + caLamViec.getSoGioCong() : caLamViecCT.getGioCongXacNhan() + "/" + caLamViec.getSoGioCong(),caLamViecCT.getGhiChu()});
+            if(caLamViecCT.getXacNhanQuanLy() == true){
+            gioCongXacNhan = gioCongXacNhan + caLamViecCT.getGioCongXacNhan();
+            }
+            gioCongPhanCa = gioCongPhanCa + caLamViec.getSoGioCong();
         }
+       jlb_GioCongXN.setText(gioCongXacNhan+"");
+       JlbGioCongPhanCa.setText(gioCongPhanCa+"");
+   
     }
     // Hiển thị cửa sổ chấm công
 
@@ -421,7 +450,9 @@ CaLamViecCTDAO daoCaLamCT = new CaLamViecCTDAO();
         String timeNow = dateFormat.format(cal.getTime());
         return timeNow;
     }
-
+    public void loadGioCong(){
+    
+    }
     public class RenderTablaPrestamos extends DefaultTableCellRenderer {
 
         @Override

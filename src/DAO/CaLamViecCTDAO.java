@@ -16,21 +16,23 @@ import java.util.List;
  *
  * @author ASUS
  */
-public class CaLamViecCTDAO extends TGSTeamDAO<CaLamViecCT, String>{
-String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,XacNhanQuanLy,GioCongXacNhan,GhiChu) VALUES(?,?,?,?,?,?,?)";
-     String UPDATE_SQL = "UPDATE CaLamViecCT SET MaCaLV = ? WHERE MaNV = ? and Ngay = ? and MaCaLV = ?";
-     String DELETE_SQL = "DELETE FROM CaLamViecCT WHERE MaCaLV = ?";
+public class CaLamViecCTDAO extends TGSTeamDAO<CaLamViecCT, String> {
+
+    String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,XacNhanQuanLy,GioCongXacNhan,GhiChu) VALUES(?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE CaLamViecCT SET MaCaLV = ? WHERE MaNV = ? and Ngay = ? and MaCaLV = ?";
+    String DELETE_SQL = "DELETE FROM CaLamViecCT WHERE MaCaLV = ?";
     String SELECT_ALL_SQL = "SELECT * FROM CaLamViecCT";
     String SELECT_BY_ID_SQL = "SELECT * FROM CaLamViecCT WHERE MaCaLV = ?";
+
     @Override
     public void insert(CaLamViecCT entity) {
         System.out.println("DAO.CaLamViecCTDAO.insert()");
-         jdbcHepler.update(INSERT_SQL, entity.getMaCaLV(),entity.getMaNV(),entity.getNgay(),null,false,0,null);
+        jdbcHepler.update(INSERT_SQL, entity.getMaCaLV(), entity.getMaNV(), entity.getNgay(), null, false, 0, null);
     }
 
     @Override
     public void update(CaLamViecCT entity) {
-         jdbcHepler.update(UPDATE_SQL, entity.getMaCaLV(),entity.getMaNV(),entity.getNgay(), entity.getMaCaLV());
+        jdbcHepler.update(UPDATE_SQL, entity.getMaCaLV(), entity.getMaNV(), entity.getNgay(), entity.getMaCaLV());
     }
 
     @Override
@@ -64,13 +66,13 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
             while (rs.next()) {
 
                 CaLamViecCT entity = new CaLamViecCT();
-               entity.setMaCaLV(rs.getString(1));
-               entity.setMaNV(rs.getInt(2));
-               entity.setNgay(rs.getString(3));
-               entity.setThoiGianChamCong(rs.getString(4));
-               entity.setXacNhanQuanLy(rs.getBoolean(5));
-               entity.setGioCongXacNhan(rs.getFloat(6));
-               entity.setGhiChu(rs.getString(7));
+                entity.setMaCaLV(rs.getString(1));
+                entity.setMaNV(rs.getInt(2));
+                entity.setNgay(rs.getString(3));
+                entity.setThoiGianChamCong(rs.getString(4));
+                entity.setXacNhanQuanLy(rs.getBoolean(5));
+                entity.setGioCongXacNhan(rs.getFloat(6));
+                entity.setGhiChu(rs.getString(7));
                 list.add(entity);
 
             }
@@ -80,6 +82,7 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
             throw new RuntimeException();
         }
     }
+
     public List<CaLamViecCT> selectByDate(String key) {
         String SelectBy_Date = "Select * from CaLamViecCT where Ngay = ?";
         List<CaLamViecCT> list = this.selectBySql(SelectBy_Date, key);
@@ -90,9 +93,21 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
 
         return list;
     }
+    public CaLamViecCT selectByDateOne(String key) {
+        String SelectBy_Date = "Select * from CaLamViecCT where Ngay = ?";
+        List<CaLamViecCT> list = this.selectBySql(SelectBy_Date, key);
+        if (list.isEmpty()) {
+
+            return null;
+        }
+
+        return list.get(0);
+    }
+    
+
     public boolean KiemTraCaLam(String ngay, String maCaLamViec, Integer MaNv) {
         String SelectBy_Date = "select * from CaLamViecCT where Ngay = ? and MaCaLV = ? and MaNV = ?";
-        List<CaLamViecCT> list = this.selectBySql(SelectBy_Date, ngay,maCaLamViec,MaNv);
+        List<CaLamViecCT> list = this.selectBySql(SelectBy_Date, ngay, maCaLamViec, MaNv);
         if (list.isEmpty()) {
 
             return false;
@@ -100,12 +115,14 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
 
         return true;
     }
-    public void deleteAllBydate(String Ngay){
-    String sQL = "Delete from CaLamViecCT Where Ngay = ?";
-    jdbcHepler.update(sQL, Ngay);
+
+    public void deleteAllBydate(String Ngay) {
+        String sQL = "Delete from CaLamViecCT Where Ngay = ?";
+        jdbcHepler.update(sQL, Ngay);
     }
-       public List<CaLamViecCT> selectByDateAndMaNV(String Date, Integer MaNV) {
-           String sql = "Select * from CaLamViecCT where Ngay = ? and MaNV = ?";
+
+    public List<CaLamViecCT> selectByDateAndMaNV(String Date, Integer MaNV) {
+        String sql = "Select * from CaLamViecCT where Ngay = ? and MaNV = ?";
         List<CaLamViecCT> list = this.selectBySql(sql, Date, MaNV);
         if (list.isEmpty()) {
             return null;
@@ -113,15 +130,17 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
 
         return list;
     }
-       public void updateTime(CaLamViecCT enity){
-       String sQL = "Update CaLamViecCT set ThoiGianChamCong = ? Where MaCaLV = ? and MaNV = ? and Ngay = ?";
-       jdbcHepler.update(sQL, enity.getThoiGianChamCong(),enity.getMaCaLV(),enity.getMaNV(),enity.getNgay());
-       
-       }
-       public List<CaLamViecCT> getLichSuChamCong(String Date, Integer MaNV) {
-           String sql = "Select *   from CaLamViecCT\n" +
-"Where (Ngay > CONVERT(VARCHAR(25),DATEADD(dd,-(DAY(GETDATE())-1),GETDATE()),101)   or Ngay = ?) and MaNV = ?\n" +
-"ORDER BY Ngay desc";
+
+    public void updateTime(CaLamViecCT enity) {
+        String sQL = "Update CaLamViecCT set ThoiGianChamCong = ? Where MaCaLV = ? and MaNV = ? and Ngay = ?";
+        jdbcHepler.update(sQL, enity.getThoiGianChamCong(), enity.getMaCaLV(), enity.getMaNV(), enity.getNgay());
+
+    }
+
+    public List<CaLamViecCT> getLichSuChamCong(String Date, Integer MaNV) {
+        String sql = "Select *   from CaLamViecCT\n"
+                + "Where (Ngay > CONVERT(VARCHAR(25),DATEADD(dd,-(DAY(GETDATE())-1),GETDATE()),101)   or Ngay = ?) and MaNV = ? or GhiChu is not null\n"
+                + "ORDER BY Ngay desc";
         List<CaLamViecCT> list = this.selectBySql(sql, Date, MaNV);
         if (list.isEmpty()) {
             return null;
@@ -129,9 +148,10 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
 
         return list;
     }
-       public List<CaLamViecCT> getCaLamViecChoXN() {
-           String sql = "Select *   from CaLamViecCT\n" +
-"Where XacNhanQuanLy = '0' and ThoiGianChamCong is not null order by Ngay desc";
+
+    public List<CaLamViecCT> getCaLamViecChoXN() {
+        String sql = "Select *   from CaLamViecCT\n"
+                + "Where XacNhanQuanLy = '0' and ThoiGianChamCong is not null and GhiChu is null order by Ngay desc";
         List<CaLamViecCT> list = this.selectBySql(sql);
         if (list.isEmpty()) {
             return null;
@@ -139,8 +159,38 @@ String INSERT_SQL = "INSERT INTO CaLamViecCT(MaCaLV,MaNV,Ngay,ThoiGianChamCong,X
 
         return list;
     }
+
+    public void QuanLyXacNhan(boolean xn, String MaCaLV, Integer MaNV, String Ngay ) {
+         String sQL = "Update CaLamViecCT set XacNhanQuanLy = ? Where MaCaLV = ? and MaNV = ? and Ngay = ?";
+        jdbcHepler.update(sQL,xn, MaCaLV, MaNV, Ngay);
+    }
+    public void QuanLyXacNhanVang(String xn, String MaCaLV, Integer MaNV, String Ngay ) {
+         String sQL = "Update CaLamViecCT set GhiChu = ? Where MaCaLV = ? and MaNV = ? and Ngay = ?";
+        jdbcHepler.update(sQL,xn, MaCaLV, MaNV, Ngay);
+    }
+
+    public void QuanLyXacNhanandNote(String GhiChu, String MaNV) {
+//         String sQL = "Update CaLamViecCT set ThoiGianChamCong = ? Where MaCaLV = ? and MaNV = ? and Ngay = ?";
+//        jdbcHepler.update(sql);
+    }
+
     public static void main(String[] args) {
         CaLamViecCTDAO c = new CaLamViecCTDAO();
         c.deleteAllBydate("2022-11-15");
+    }
+    public float getGioCong(String Date, Integer MaNV) {
+        float tongGioCong = 0;
+        String sql = "Select *   from CaLamViecCT\n"
+                + "Where (Ngay > CONVERT(VARCHAR(25),DATEADD(dd,-(DAY(GETDATE())-1),GETDATE()),101)   or Ngay = ?) and MaNV = ? \n"
+                + "ORDER BY Ngay desc";
+        List<CaLamViecCT> list = this.selectBySql(sql, Date, MaNV);
+        for (CaLamViecCT caLamViecCT : list) {
+            tongGioCong = tongGioCong + caLamViecCT.getGioCongXacNhan();
+        }
+        if (list.isEmpty()) {
+            return  0;
+        }
+
+        return tongGioCong;
     }
 }

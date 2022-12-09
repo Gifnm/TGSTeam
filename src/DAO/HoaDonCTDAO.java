@@ -137,4 +137,46 @@ public class HoaDonCTDAO extends TGSTeamDAO<HoaDonCT, String> {
             
         }
     }
+   public Float getDoanhThu(String NgayE) {
+        float doanhThu = 0;
+        String sql = "select SUM(HoaDonCT.ThanhTien)\n"
+                + "from HoaDon join HoaDonCT on HoaDon.MaHD = HoaDonCT.MaHD join SanPham on SanPham.Barcode = HoaDonCT.Barcode\n"
+                + "where HoaDon.NgayTao>DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0)and HoaDon.NgayTao<?";
+        try {
+
+            ResultSet rs = jdbcHepler.query(sql,NgayE);
+
+            while (rs.next()) {
+                doanhThu = rs.getFloat(1);
+               
+            }
+            rs.getStatement().getConnection().close();
+            return doanhThu;
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new RuntimeException();
+            
+        }
+    }
+   public Float getloiNhuan(String NgayE) {
+        float doanhThu = 0;
+        String sql = "select SUM((SanPham.DonGia-SanPham.GiaNhap)*HoaDonCT.SoLuong)\n"
+                + "from HoaDon join HoaDonCT on HoaDon.MaHD = HoaDonCT.MaHD join SanPham on SanPham.Barcode = HoaDonCT.Barcode\n"
+                + "where HoaDon.NgayTao>DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0)and HoaDon.NgayTao<?";
+        try {
+
+            ResultSet rs = jdbcHepler.query(sql,NgayE);
+
+            while (rs.next()) {
+                doanhThu = rs.getFloat(1);
+               
+            }
+            rs.getStatement().getConnection().close();
+            return doanhThu;
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new RuntimeException();
+            
+        }
+    }
 }

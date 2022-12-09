@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="184" pageHeight="2836" columnWidth="144" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cb53bcb7-b0e6-452d-a4d3-7b3295ad9546">
 	<property name="ireport.zoom" value="3.4522712143931042"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<parameter name="sMaHD" class="java.lang.String">
+	<property name="ireport.y" value="1169"/>
+	<parameter name="sMaPX" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -22,37 +22,41 @@
      NhanVien."HinhAnh" AS NhanVien_HinhAnh,
      NhanVien."MaCH" AS NhanVien_MaCH,
      NhanVien."VaiTro" AS NhanVien_VaiTro,
+     PhieuMuon."MaPM" AS PhieuMuon_MaPM,
+     PhieuMuon."MaNV" AS PhieuMuon_MaNV,
+     PhieuMuon."NgayLap" AS PhieuMuon_NgayLap,
+     PhieuMuon."NgayTraDuKien" AS PhieuMuon_NgayTraDuKien,
+     PhieuMuon."NgayTra" AS PhieuMuon_NgayTra,
+CASE
+                  WHEN  PhieuMuon."TrangThaiTra" = 0
+                     THEN N'Chưa trả'
+                  ELSE N'Đã trả'
+             END AS PhieuMuon_TrangThaiTra,
+     PhieuMuon."TongTien" AS PhieuMuon_TongTien,
+     PhieuMuon."TienMat" AS PhieuMuon_TienMat,
+     PhieuMuon."TienThoi" AS PhieuMuon_TienThoi,
+     PhieuMuonCT."MaPM" AS PhieuMuonCT_MaPM,
+     PhieuMuonCT."Barcode" AS PhieuMuonCT_Barcode,
+     PhieuMuonCT."SoLuong" AS PhieuMuonCT_SoLuong,
+     PhieuMuonCT."ThanhTien" AS PhieuMuonCT_ThanhTien,
      SanPham."ID" AS SanPham_ID,
      SanPham."Barcode" AS SanPham_Barcode,
      SanPham."TenSP" AS SanPham_TenSP,
      SanPham."GiaMuon" AS SanPham_GiaMuon,
-       FORMAT(SanPham."DonGia",'#,###') AS SanPham_DonGia,
+     SanPham."DonGia" AS SanPham_DonGia,
+     SanPham."GiaNhap" AS SanPham_GiaNhap,
+     SanPham."VAT" AS SanPham_VAT,
      SanPham."MaLoaiSP" AS SanPham_MaLoaiSP,
      SanPham."MaCH" AS SanPham_MaCH,
      SanPham."HinhAnh" AS SanPham_HinhAnh,
-     SanPham."SoLuongTrungBay" AS SanPham_SoLuongTrungBay,
-     LoaiSanPham."MaLoaiSP" AS LoaiSanPham_MaLoaiSP,
-     LoaiSanPham."TenLoaiSP" AS LoaiSanPham_TenLoaiSP,
-     HoaDon."MaHD" AS HoaDon_MaHD,
-     HoaDon."MaNV" AS HoaDon_MaNV,
-     HoaDon."NgayTao" AS HoaDon_NgayTao,
-       FORMAT(HoaDon."TienMat",'#,###') AS HoaDon_TienMat,
-       FORMAT(HoaDon."TienThoi",'#,###') AS HoaDon_TienThoi,
-       FORMAT(HoaDon."TongTien",'#,###') AS HoaDon_TongTien,
-     HoaDonCT."MaHD" AS HoaDonCT_MaHD,
-     HoaDonCT."Barcode" AS HoaDonCT_Barcode,
-     HoaDonCT."SoLuong" AS HoaDonCT_SoLuong,
-     FORMAT(HoaDonCT."ThanhTien",'#,###') AS HoaDonCT_ThanhTien
-
+     SanPham."SoLuongTrungBay" AS SanPham_SoLuongTrungBay
 FROM
      "dbo"."CuaHang" CuaHang INNER JOIN "dbo"."NhanVien" NhanVien ON CuaHang."MaCH" = NhanVien."MaCH"
-     INNER JOIN "dbo"."SanPham" SanPham ON CuaHang."MaCH" = SanPham."MaCH"
-     INNER JOIN "dbo"."LoaiSanPham" LoaiSanPham ON SanPham."MaLoaiSP" = LoaiSanPham."MaLoaiSP"
-     INNER JOIN "dbo"."HoaDonCT" HoaDonCT ON SanPham."Barcode" = HoaDonCT."Barcode"
-     INNER JOIN "dbo"."HoaDon" HoaDon ON HoaDonCT."MaHD" = HoaDon."MaHD"
-     AND NhanVien."MaNV" = HoaDon."MaNV"
-Where
-HoaDonCT."MaHD" = $P{sMaHD}]]>
+     INNER JOIN "dbo"."PhieuMuon" PhieuMuon ON NhanVien."MaNV" = PhieuMuon."MaNV"
+     INNER JOIN "dbo"."PhieuMuonCT" PhieuMuonCT ON PhieuMuon."MaPM" = PhieuMuonCT."MaPM"
+     INNER JOIN "dbo"."SanPham" SanPham ON PhieuMuonCT."Barcode" = SanPham."Barcode"
+     AND CuaHang."MaCH" = SanPham."MaCH"
+Where PhieuMuonCT."MaPM" = $P{sMaPX}]]>
 	</queryString>
 	<field name="CuaHang_MaCH" class="java.lang.Integer"/>
 	<field name="CuaHang_TenCH" class="java.lang.String"/>
@@ -68,27 +72,30 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 	<field name="NhanVien_HinhAnh" class="java.lang.String"/>
 	<field name="NhanVien_MaCH" class="java.lang.Integer"/>
 	<field name="NhanVien_VaiTro" class="java.lang.String"/>
+	<field name="PhieuMuon_MaPM" class="java.lang.String"/>
+	<field name="PhieuMuon_MaNV" class="java.lang.Integer"/>
+	<field name="PhieuMuon_NgayLap" class="java.sql.Timestamp"/>
+	<field name="PhieuMuon_NgayTraDuKien" class="java.sql.Date"/>
+	<field name="PhieuMuon_NgayTra" class="java.sql.Timestamp"/>
+	<field name="PhieuMuon_TrangThaiTra" class="java.lang.String"/>
+	<field name="PhieuMuon_TongTien" class="java.lang.Double"/>
+	<field name="PhieuMuon_TienMat" class="java.lang.Double"/>
+	<field name="PhieuMuon_TienThoi" class="java.lang.Double"/>
+	<field name="PhieuMuonCT_MaPM" class="java.lang.String"/>
+	<field name="PhieuMuonCT_Barcode" class="java.lang.String"/>
+	<field name="PhieuMuonCT_SoLuong" class="java.lang.Integer"/>
+	<field name="PhieuMuonCT_ThanhTien" class="java.lang.Double"/>
 	<field name="SanPham_ID" class="java.lang.Integer"/>
 	<field name="SanPham_Barcode" class="java.lang.String"/>
 	<field name="SanPham_TenSP" class="java.lang.String"/>
 	<field name="SanPham_GiaMuon" class="java.lang.Double"/>
-	<field name="SanPham_DonGia" class="java.lang.String"/>
+	<field name="SanPham_DonGia" class="java.lang.Double"/>
+	<field name="SanPham_GiaNhap" class="java.lang.Double"/>
+	<field name="SanPham_VAT" class="java.lang.Integer"/>
 	<field name="SanPham_MaLoaiSP" class="java.lang.String"/>
 	<field name="SanPham_MaCH" class="java.lang.Integer"/>
 	<field name="SanPham_HinhAnh" class="java.lang.String"/>
 	<field name="SanPham_SoLuongTrungBay" class="java.lang.Integer"/>
-	<field name="LoaiSanPham_MaLoaiSP" class="java.lang.String"/>
-	<field name="LoaiSanPham_TenLoaiSP" class="java.lang.String"/>
-	<field name="HoaDon_MaHD" class="java.lang.String"/>
-	<field name="HoaDon_MaNV" class="java.lang.Integer"/>
-	<field name="HoaDon_NgayTao" class="java.sql.Timestamp"/>
-	<field name="HoaDon_TienMat" class="java.lang.String"/>
-	<field name="HoaDon_TienThoi" class="java.lang.String"/>
-	<field name="HoaDon_TongTien" class="java.lang.String"/>
-	<field name="HoaDonCT_MaHD" class="java.lang.String"/>
-	<field name="HoaDonCT_Barcode" class="java.lang.String"/>
-	<field name="HoaDonCT_SoLuong" class="java.lang.Integer"/>
-	<field name="HoaDonCT_ThanhTien" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -118,7 +125,7 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Phiếu Thanh Toán]]></text>
+				<text><![CDATA[Phiếu mượn trả sách]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -150,14 +157,14 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HoaDonCT_MaHD}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PhieuMuonCT_MaPM}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="37" y="21" width="78" height="20" uuid="8f95cd9c-cea5-4074-b11e-f6859f363b02"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HoaDon_NgayTao}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PhieuMuon_NgayLap}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="37" y="41" width="93" height="35" uuid="5b9049c3-a827-43dd-b4a0-31c7fc5e6f8e"/>
@@ -171,7 +178,7 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Giá bán]]></text>
+				<text><![CDATA[Giá mượn]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="83" y="77" width="32" height="28" uuid="14804905-cb55-4569-820c-ec79d8f84baf"/>
@@ -193,7 +200,7 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="54" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="80" height="30" uuid="061d6911-c9b0-4115-8f89-59ab4a6506ab"/>
 				<textElement>
@@ -206,21 +213,21 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HoaDonCT_SoLuong}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PhieuMuonCT_SoLuong}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="35" y="30" width="48" height="20" uuid="857bac31-766c-433b-8551-ba04769e612f"/>
 				<textElement textAlignment="Justified">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{SanPham_DonGia}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{SanPham_GiaMuon}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="83" y="30" width="47" height="20" uuid="6d217227-dbf9-47af-a335-5620b16243df"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HoaDonCT_ThanhTien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PhieuMuonCT_ThanhTien}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -231,7 +238,7 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="237" splitType="Stretch">
+		<band height="306" splitType="Stretch">
 			<staticText>
 				<reportElement x="-15" y="34" width="52" height="20" uuid="bf1d30ba-2958-4f69-ac2a-45eaa38341fb"/>
 				<textElement>
@@ -258,21 +265,21 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HoaDon_TongTien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PhieuMuon_TongTien}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="37" y="54" width="93" height="20" uuid="e61dd5be-6671-4490-be85-e1b81adcb830"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HoaDon_TienMat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PhieuMuon_TienMat}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-15" y="95" width="145" height="20" uuid="2221d672-8c5b-4f88-b8b5-2017f8f60448"/>
+				<reportElement x="-15" y="167" width="145" height="20" uuid="2221d672-8c5b-4f88-b8b5-2017f8f60448"/>
 				<text><![CDATA[-----------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-15" y="171" width="130" height="51" uuid="543a3687-c5d0-44b5-b845-f440eb140275"/>
+				<reportElement x="-15" y="243" width="130" height="51" uuid="543a3687-c5d0-44b5-b845-f440eb140275"/>
 				<textElement>
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -283,14 +290,14 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 				<text><![CDATA[------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-3" y="115" width="118" height="14" uuid="d9cd809a-9998-48e2-b4ef-77b02af5b1eb"/>
+				<reportElement x="-15" y="187" width="118" height="14" uuid="d9cd809a-9998-48e2-b4ef-77b02af5b1eb"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mã hóa đơn/ hóa đơn điện tử]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-15" y="157" width="145" height="14" uuid="780f50d1-24cb-43aa-8327-a13aa66195fc"/>
+				<reportElement x="-15" y="229" width="145" height="14" uuid="780f50d1-24cb-43aa-8327-a13aa66195fc"/>
 				<text><![CDATA[------------------------------------------]]></text>
 			</staticText>
 			<staticText>
@@ -301,9 +308,9 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 				<text><![CDATA[Cà thẻ:]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement isPrintRepeatedValues="false" x="3" y="129" width="100" height="28" uuid="a1845617-f6f1-4833-9000-405ed1330591"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="201" width="100" height="28" uuid="a1845617-f6f1-4833-9000-405ed1330591"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="EAN128" drawText="false" checksumRequired="false" barWidth="1" barHeight="30">
-					<jr:codeExpression><![CDATA[$F{HoaDonCT_MaHD}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$F{PhieuMuon_MaPM}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField>
@@ -311,7 +318,53 @@ HoaDonCT."MaHD" = $P{sMaHD}]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HoaDon_TienThoi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PhieuMuon_TienThoi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-15" y="95" width="145" height="20" uuid="ed0b4acb-309d-4b31-a40f-bdf11771e5c5"/>
+				<text><![CDATA[-----------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-15" y="115" width="70" height="20" uuid="6170554a-f710-48db-ab75-bef5e65842a8"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ngày trả dự kiến:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="55" y="115" width="75" height="20" uuid="8185ba76-722b-469b-8391-10ac52c36277"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PhieuMuon_NgayTraDuKien}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-15" y="135" width="50" height="20" uuid="7773726d-075b-4e78-9539-88ab34c1cd7d"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trạng thái:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="37" y="135" width="75" height="20" uuid="acec3a6f-28e7-4eea-b561-0b1f942e3d85"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PhieuMuon_TrangThaiTra}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-15" y="155" width="70" height="20" uuid="53d3c987-081d-4f24-a7c4-d0d3cfc29774"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ngày trả thực tế:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="55" y="155" width="75" height="20" uuid="f24577de-f305-464f-bc62-063f5c78a818"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PhieuMuon_NgayTra}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

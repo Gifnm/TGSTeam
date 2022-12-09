@@ -147,6 +147,7 @@ public class ChamCong extends javax.swing.JFrame {
          jpn_ChamCong5.getBtnChamCong().setLabel("đã chấm");
          jpn_ChamCong5.setEnabled(false);
          }
+         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

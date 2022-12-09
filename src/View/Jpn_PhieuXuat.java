@@ -11,6 +11,7 @@ import com.edysys.utils.MsgBox;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,15 +26,20 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
     private ArrayList<SanPham> list = new ArrayList<>();
     DefaultTableModel model = new DefaultTableModel();
     int[] row;
-
+     private DefaultListModel listModel;
+      ArrayList<SanPham> listTimKiem = new ArrayList<>();
     /**
      * Creates new form Jpn_PhieuXuat
      */
     public Jpn_PhieuXuat() {
         initComponents();
+        txtBarcode.requestFocus();
+        jpmMenuSeach.add(jpnSeach);
         txtTienMat.requestFocus();
         model = (DefaultTableModel) tblSach.getModel();
         tblSach.setModel(model);
+        listModel = new DefaultListModel();
+        JListSanPham.setModel(listModel);
     }
 
     /**
@@ -45,6 +51,10 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jpnSeach = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        JListSanPham = new javax.swing.JList<>();
+        jpmMenuSeach = new javax.swing.JPopupMenu();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSach = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
@@ -68,6 +78,35 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
         lblTongTien = new javax.swing.JLabel();
         jlbDaGiam = new javax.swing.JLabel();
         lblTienThoi = new javax.swing.JLabel();
+
+        JListSanPham.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        JListSanPham.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        JListSanPham.setForeground(new java.awt.Color(51, 153, 255));
+        JListSanPham.setVisibleRowCount(35);
+        JListSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JListSanPhamMouseClicked(evt);
+            }
+        });
+        JListSanPham.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                JListSanPhamKeyPressed(evt);
+            }
+        });
+        jScrollPane7.setViewportView(JListSanPham);
+
+        javax.swing.GroupLayout jpnSeachLayout = new javax.swing.GroupLayout(jpnSeach);
+        jpnSeach.setLayout(jpnSeachLayout);
+        jpnSeachLayout.setHorizontalGroup(
+            jpnSeachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+        );
+        jpnSeachLayout.setVerticalGroup(
+            jpnSeachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+        );
+
+        jpmMenuSeach.setFocusable(false);
 
         setPreferredSize(new java.awt.Dimension(1143, 667));
 
@@ -130,6 +169,9 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
         txtBarcode.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtBarcodeKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBarcodeKeyReleased(evt);
             }
         });
 
@@ -353,7 +395,7 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
     private void txtBarcodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBarcodeKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            getSanPham();
+            getSanPham(txtBarcode.getText());
             txtBarcode.setText("");
             
         }
@@ -392,8 +434,64 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton14ActionPerformed
 
+    private void JListSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JListSanPhamMouseClicked
+        // TODO add your handling code here:
+
+        int index = JListSanPham.getSelectedIndex();
+        SanPham sanPham = new SanPham();
+        sanPham = listTimKiem.get(index);
+        getSanPham(sanPham.getBarcode());
+        txtBarcode.setText("");
+        txtBarcode.requestFocus();
+        FillToTable();
+    }//GEN-LAST:event_JListSanPhamMouseClicked
+
+    private void JListSanPhamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JListSanPhamKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int index = JListSanPham.getSelectedIndex();
+            SanPham sanPham = new SanPham();
+            sanPham = listTimKiem.get(index);
+            getSanPham(sanPham.getBarcode());
+            txtBarcode.setText("");
+            txtBarcode.requestFocus();
+            FillToTable();
+        }
+    }//GEN-LAST:event_JListSanPhamKeyPressed
+
+    private void txtBarcodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBarcodeKeyReleased
+        // TODO add your handling code here
+        String text = txtBarcode.getText();
+        System.out.println("View.Jpn_PhieuXuat.txtBarcodeKeyReleased()");
+        if (!text.equals("")) {
+            listModel.removeAllElements();
+            listTimKiem.removeAll(listTimKiem);
+            List<SanPham> sp = new ArrayList<>();
+            try {
+                Integer.parseInt(text);
+                sp = spDAO.selectBykeyBarcode(text);
+                for (SanPham sanPham : sp) {
+                    listTimKiem.add(sanPham);
+                    listModel.addElement(sanPham.getTenSP());
+                }
+                jpmMenuSeach.show(txtBarcode, 0, txtBarcode.getHeight());
+            } catch (Exception e) {
+                listTimKiem.removeAll(listTimKiem);
+                sp = spDAO.selectBykeyWork(text);
+                for (SanPham sanPham : sp) {
+                    listTimKiem.add(sanPham);
+                    listModel.addElement(sanPham.getTenSP());
+                }
+                jpmMenuSeach.show(txtBarcode, 0, txtBarcode.getHeight());
+            }
+        } else {
+            jpmMenuSeach.setVisible(false);
+        }
+    }//GEN-LAST:event_txtBarcodeKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> JListSanPham;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton14;
@@ -410,7 +508,10 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JLabel jlbDaGiam;
+    private javax.swing.JPopupMenu jpmMenuSeach;
+    private javax.swing.JPanel jpnSeach;
     private javax.swing.JLabel lblPhaiThu;
     private javax.swing.JLabel lblTienThoi;
     private javax.swing.JLabel lblTongTien;
@@ -428,10 +529,10 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
     txtBarcode.requestFocus();
     txtTienMat.setText("");
     }
-    public void getSanPham() {
+    public void getSanPham(String barcode) {
 
         SanPham sp = new SanPham();
-        sp = spDAO.selectById(txtBarcode.getText());
+        sp = spDAO.selectById(barcode);
         if (sp == null) {
             MsgBox.alert(this, "Sản phẩm không tồn tại, vui lòng kiểm tra lại mã sản phẩm!");
         } else {
@@ -446,7 +547,7 @@ public class Jpn_PhieuXuat extends javax.swing.JPanel {
             list.add(sp);
             FillToTable();
             LayTongTien();
-            txtTienMat.setText(lblPhaiThu.getText());
+
         }
     }
 

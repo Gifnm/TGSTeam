@@ -7,11 +7,15 @@ package View;
 import DAO.CaLamViecCTDAO;
 import DAO.HoaDonCTDAO;
 import DAO.HoaDonDAO;
+import DAO.PhieuMuonCTDAO;
+import DAO.PhieuMuonDAO;
 import DAO.SanPhamDAO;
 import Model.CaLamViecCT;
 import Model.HoaDon;
 import Model.HoaDonCT;
 import Model.NhanVien;
+import Model.PhieuMuon;
+import Model.PhieuMuonCT;
 import Model.SanPham;
 import com.edysys.utils.Auth;
 import com.edysys.utils.MsgBox;
@@ -26,7 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,6 +45,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -74,19 +79,31 @@ public class View_MBH extends javax.swing.JFrame {
      * Creates new form PMBH
      */
     private DefaultListModel listModel;
+    // table tra cứu phiếu xuất
     private List<HoaDon> danSachHD = new ArrayList<>();
     DefaultTableModel modelHD = new DefaultTableModel();
+    // table tra cứu phiếu xuất
+
+    // tbale lịch sử phiếu xuất
     private List<HoaDonCT> danSachLsHD = new ArrayList<>();
     DefaultTableModel modellshd = new DefaultTableModel();
+    // table lịch sử phiếu xuất
+
+    // tbale bán hàng
     private ArrayList<SanPham> list = new ArrayList<>();
     DefaultTableModel model = new DefaultTableModel();
+    //tbale bán hàng
+
+    // table tem giá
     DefaultTableModel modelTemGia = new DefaultTableModel();
-    List<SanPham> listTemGia = new ArrayList<>();
+    List<SanPham> listTemGia = new ArrayList();
+    //  tem giá
     // Model tbale Nhập trả
     DefaultTableModel modelNhapTra = new DefaultTableModel();
     List<HoaDonCT> danhSachNhapTra = new ArrayList<>();
     // List tìm kiếm
     ArrayList<SanPham> listTimKiem = new ArrayList<>();
+    //
     int[] row;
     Jpn_PhieuXuat phieuXuat1 = new Jpn_PhieuXuat();
     Jpn_PhieuXuat phieuXuat2 = new Jpn_PhieuXuat();
@@ -126,6 +143,7 @@ public class View_MBH extends javax.swing.JFrame {
         //set model cho table nhập trả
         modelNhapTra = (DefaultTableModel) jtblNhapTra.getModel();
         jtblNhapTra.setModel(modelNhapTra);
+      
     }
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {
@@ -197,32 +215,6 @@ public class View_MBH extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-        jpnMuonTra = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        txt_MuonTra_Barcode = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        jlb_MuonTra_PhaiThu = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        txt_MuonTra_TienMat = new javax.swing.JTextField();
-        jLabel33 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
-        jLabel35 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
-        jButton13 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel40 = new javax.swing.JLabel();
-        txtNgayTra = new com.toedter.calendar.JDateChooser();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jLabel17 = new javax.swing.JLabel();
-        jlb_MuonTra_TongTien = new javax.swing.JLabel();
-        jlb_MuonTra_DaGiam = new javax.swing.JLabel();
-        jlb_MuonTra_TienThoi = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jtblMuonTra = new javax.swing.JTable();
         JpnTraCuuPx = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jLabel37 = new javax.swing.JLabel();
@@ -254,6 +246,8 @@ public class View_MBH extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -836,253 +830,6 @@ public class View_MBH extends javax.swing.JFrame {
 
         JtbTabbed.addTab("Kiểm tra giá", jpnKiemTraGia);
 
-        jPanel8.setBackground(new java.awt.Color(153, 204, 255));
-        jPanel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel13.setText("Nhập mã sản phẩm (F8)");
-        jLabel13.setOpaque(true);
-
-        txt_MuonTra_Barcode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_MuonTra_BarcodeActionPerformed(evt);
-            }
-        });
-        txt_MuonTra_Barcode.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_MuonTra_BarcodeKeyPressed(evt);
-            }
-        });
-
-        jLabel14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel14.setText("Phải thu:");
-
-        jlb_MuonTra_PhaiThu.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jlb_MuonTra_PhaiThu.setForeground(new java.awt.Color(255, 102, 102));
-        jlb_MuonTra_PhaiThu.setText("0");
-
-        jLabel15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel15.setText("Tổng tiền:");
-
-        jLabel16.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel16.setText("Đã giảm:");
-
-        jPanel9.setBackground(new java.awt.Color(153, 204, 255));
-        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tiền mặt (F9)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Arial", 1, 14))); // NOI18N
-
-        txt_MuonTra_TienMat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_MuonTra_TienMatActionPerformed(evt);
-            }
-        });
-        txt_MuonTra_TienMat.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                txt_MuonTra_TienMatPropertyChange(evt);
-            }
-        });
-        txt_MuonTra_TienMat.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_MuonTra_TienMatKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_MuonTra_TienMatKeyReleased(evt);
-            }
-        });
-
-        jLabel33.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel33.setText("Cà thẻ F7");
-
-        jLabel34.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel34.setText("Mượn lại");
-
-        jLabel35.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel35.setText("Trả sách");
-
-        jLabel36.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel36.setText("In Bill F12");
-
-        jButton13.setText("ALt+F1");
-
-        jButton16.setText("F12");
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jButton3.setText("F7");
-
-        jLabel40.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel40.setText("Ngày trả:");
-
-        txtNgayTra.setDateFormatString("yyyy-MM-dd");
-
-        jToggleButton1.setText("OFF");
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(txt_MuonTra_TienMat)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel34)
-                            .addComponent(jLabel33)
-                            .addComponent(jLabel36))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                            .addComponent(jToggleButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel35)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton13))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel40)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addComponent(txtNgayTra, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txt_MuonTra_TienMat, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel40)
-                    .addComponent(txtNgayTra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jLabel33))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel34)
-                    .addComponent(jToggleButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton13)
-                    .addComponent(jLabel35))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel36)
-                    .addComponent(jButton16)))
-        );
-
-        jLabel17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel17.setText("Tiền thối lại:");
-
-        jlb_MuonTra_TongTien.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jlb_MuonTra_TongTien.setForeground(new java.awt.Color(102, 102, 102));
-        jlb_MuonTra_TongTien.setText("0");
-
-        jlb_MuonTra_DaGiam.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jlb_MuonTra_DaGiam.setForeground(new java.awt.Color(102, 102, 102));
-        jlb_MuonTra_DaGiam.setText("0");
-
-        jlb_MuonTra_TienThoi.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jlb_MuonTra_TienThoi.setForeground(new java.awt.Color(102, 102, 102));
-        jlb_MuonTra_TienThoi.setText("0");
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel17)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jlb_MuonTra_TienThoi)
-                .addGap(34, 34, 34))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addComponent(jLabel14)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlb_MuonTra_TongTien)
-                    .addComponent(jlb_MuonTra_PhaiThu)
-                    .addComponent(jlb_MuonTra_DaGiam))
-                .addGap(42, 42, 42))
-            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(txt_MuonTra_Barcode)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_MuonTra_Barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jlb_MuonTra_PhaiThu))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(jlb_MuonTra_TongTien))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(jlb_MuonTra_DaGiam))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(jlb_MuonTra_TienThoi))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        jtblMuonTra.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jtblMuonTra.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "STT", "Tên sản phẩm", "Số lượng", "Đơn giá", "Thành tiền"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, true, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane6.setViewportView(jtblMuonTra);
-
-        javax.swing.GroupLayout jpnMuonTraLayout = new javax.swing.GroupLayout(jpnMuonTra);
-        jpnMuonTra.setLayout(jpnMuonTraLayout);
-        jpnMuonTraLayout.setHorizontalGroup(
-            jpnMuonTraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnMuonTraLayout.createSequentialGroup()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jpnMuonTraLayout.setVerticalGroup(
-            jpnMuonTraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        JtbTabbed.addTab("Mượn/Trả", jpnMuonTra);
-
         jLabel37.setText("Mã phiếu xuất:");
 
         txtMaPX.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1341,6 +1088,22 @@ public class View_MBH extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem7);
 
+        jMenuItem9.setText("Lịch phân ca cá nhân");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem9);
+
+        jMenuItem8.setText("Lịch phân ca cửa hàng");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem8);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -1376,6 +1139,8 @@ public class View_MBH extends javax.swing.JFrame {
         // TODO add your handling code here:
         int tabSelected = JtbTabbed.getSelectedIndex();
         String nameTabSelected = JtbTabbed.getTitleAt(tabSelected);
+       
+        {
         if (nameTabSelected.equalsIgnoreCase("Phiếu xuất") || nameTabSelected.equalsIgnoreCase("Kiểm tra giá") || nameTabSelected.equalsIgnoreCase("Mượn/trả") || nameTabSelected.equalsIgnoreCase("Tra cứu phiếu xuất")) {
             if (txtTienMat.equals("") || Float.parseFloat(lblPhaiThu.getText()) > Float.parseFloat(txtTienMat.getText())) {
                 MsgBox.alert(null, "Vui lòng kiểm tra tiền mặt");
@@ -1413,7 +1178,7 @@ public class View_MBH extends javax.swing.JFrame {
                 }
             }
         }
-
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -1667,34 +1432,6 @@ public class View_MBH extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formWindowOpened
 
-    private void txt_MuonTra_BarcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_MuonTra_BarcodeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_MuonTra_BarcodeActionPerformed
-
-    private void txt_MuonTra_BarcodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_MuonTra_BarcodeKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_MuonTra_BarcodeKeyPressed
-
-    private void txt_MuonTra_TienMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_MuonTra_TienMatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_MuonTra_TienMatActionPerformed
-
-    private void txt_MuonTra_TienMatPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txt_MuonTra_TienMatPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_MuonTra_TienMatPropertyChange
-
-    private void txt_MuonTra_TienMatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_MuonTra_TienMatKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_MuonTra_TienMatKeyPressed
-
-    private void txt_MuonTra_TienMatKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_MuonTra_TienMatKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_MuonTra_TienMatKeyReleased
-
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton16ActionPerformed
-
     private void txtBarcodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBarcodeKeyReleased
         // TODO add your handling code here:
         String text = txtBarcode.getText();
@@ -1818,6 +1555,29 @@ public class View_MBH extends javax.swing.JFrame {
 
     }//GEN-LAST:event_JListSanPhamKeyPressed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+         LichPhanCaCaNhan lichPhanCaCaNhan;
+        try {
+            lichPhanCaCaNhan = new LichPhanCaCaNhan();
+            lichPhanCaCaNhan.setLocationRelativeTo(this);
+            try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            new LichPhanCaCaNhan().setVisible(true)
+                    ;
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
+        } catch (ParseException ex) {
+            Logger.getLogger(View_TBHH.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1880,23 +1640,15 @@ public class View_MBH extends javax.swing.JFrame {
     private javax.swing.JButton btnXemPhieuXuat;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel28;
@@ -1905,15 +1657,10 @@ public class View_MBH extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1929,25 +1676,23 @@ public class View_MBH extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JToggleButton jToggleButton1;
     private com.toedter.calendar.JDateChooser jdcFirtDay;
     private com.toedter.calendar.JDateChooser jdcNextDay;
     private javax.swing.JDialog jdlHoaDon;
@@ -1955,16 +1700,10 @@ public class View_MBH extends javax.swing.JFrame {
     private javax.swing.JLabel jlbDoanhThu;
     private javax.swing.JLabel jlbGiaTriBillTB;
     private javax.swing.JLabel jlbSoPhieuXuat;
-    private javax.swing.JLabel jlb_MuonTra_DaGiam;
-    private javax.swing.JLabel jlb_MuonTra_PhaiThu;
-    private javax.swing.JLabel jlb_MuonTra_TienThoi;
-    private javax.swing.JLabel jlb_MuonTra_TongTien;
     private javax.swing.JMenuItem jmnNhapTra;
     private javax.swing.JPopupMenu jpmMenuSeach;
     private javax.swing.JPanel jpnKiemTraGia;
-    private javax.swing.JPanel jpnMuonTra;
     private javax.swing.JPanel jpnSeach;
-    private javax.swing.JTable jtblMuonTra;
     private javax.swing.JTable jtblNhapTra;
     private javax.swing.JLabel lblLsTienThoi;
     private javax.swing.JLabel lblLsTongTien;
@@ -1977,14 +1716,17 @@ public class View_MBH extends javax.swing.JFrame {
     private javax.swing.JTable tblSach;
     private javax.swing.JTextField txtBarcode;
     private javax.swing.JTextField txtMaPX;
-    private com.toedter.calendar.JDateChooser txtNgayTra;
     private javax.swing.JTextField txtNhapTraBarcode;
     private javax.swing.JTextField txtTienMat;
-    private javax.swing.JTextField txt_MuonTra_Barcode;
-    private javax.swing.JTextField txt_MuonTra_TienMat;
     // End of variables declaration//GEN-END:variables
   int indexRow = 0;
-
+    int soNgayMuon = 0;
+    boolean kiemTraNgayMuon = false;
+    PhieuMuon phieuMuon;
+// DAO
+    PhieuMuonDAO  phieuMuonDAO = new PhieuMuonDAO();
+    PhieuMuonCTDAO phieuMuonCTDAO = new PhieuMuonCTDAO();
+            
     public void FillToTablePx() {
         danSachHD = hdDAO.selectAll();
         modelHD.setRowCount(0);
@@ -2025,6 +1767,7 @@ public class View_MBH extends javax.swing.JFrame {
             STT++;
         }
         LayTongTien();
+        txtTienMat.setText(LayTongTien() + "");
     }
 
     public void FillToTableTeamGia() {
@@ -2051,10 +1794,8 @@ public class View_MBH extends javax.swing.JFrame {
             map.put("sMaHD", maSo.trim());
             Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=TGSTeam", "sa", "123");
             JasperPrint p = JasperFillManager.fillReport(rpt, map, conn);
-            JasperViewer.viewReport(p, false);
-            //JasperPrintManager.printReport(p, false);
-//           JasperPrint print = JasperFillManager.fillReport(rpt, map, conn);     
-//JasperViewer.viewReport(print, true);
+            //JasperViewer.viewReport(p, false);
+            JasperPrintManager.printReport(p, false);
         } catch (JRException ex) {
             Logger.getLogger(View_Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -2080,9 +1821,9 @@ public class View_MBH extends javax.swing.JFrame {
             list.add(sp);
             FillToTable();
             LayTongTien();
-
         }
     }
+
 
     public String LayThoiGian() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -2092,7 +1833,6 @@ public class View_MBH extends javax.swing.JFrame {
     }
 
     public void InHOaDon() {
-        System.out.println("Bắt đầu tạo hóa đơn!");
         // Tao MaHD
         maSo = "";
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -2100,9 +1840,7 @@ public class View_MBH extends javax.swing.JFrame {
         String timeNow = dateFormat.format(cal.getTime());
         String tienMat = txtTienMat.getText();
         tienMat = tienMat == "" ? "0" : tienMat;
-        //timeNow = timeNow.substring(2,13);
         maSo = maSo + timeNow;
-        System.out.println("View.View_MBH.InHOaDon()" + maSo);
         // Tao HD
         HoaDon hd = new HoaDon(maSo, Auth.user.getMaNV(), LayThoiGian(), Float.parseFloat(tienMat), tienThoi, LayTongTien());
         hdDAO.insert(hd);
@@ -2113,12 +1851,11 @@ public class View_MBH extends javax.swing.JFrame {
         }
         xuatBill();
     }
-
+    
     public void removeRow(int[] indices) { // xoa mot tap cac hang da duoc chon
         Arrays.sort(indices);
         for (int i = indices.length - 1; i >= 0; i--) {
             list.remove(indices[i]);
-            //            fireTableRowsDeleted(indices[i], indices[i]);
         }
         FillToTable();
     }
@@ -2166,7 +1903,6 @@ public class View_MBH extends javax.swing.JFrame {
     List<HoaDonCT> listTbaleNhapTra = new ArrayList<>();
 
     private void filltoTbaleNhapTra() {
-
         String key = txtNhapTraBarcode.getText().substring(2, txtNhapTraBarcode.getText().length());
         listTbaleNhapTra = hdctDAO.selectByMaHD(key);
         modelNhapTra.setRowCount(0);
@@ -2175,7 +1911,25 @@ public class View_MBH extends javax.swing.JFrame {
             sanPham = spDAO.selectById(hoaDonCT.getBarcode());
             modelNhapTra.addRow(new Object[]{hoaDonCT.getMaHD(), sanPham.getTenSP(), hoaDonCT.getSoLuong(), sanPham.getDonGia()});
         }
+    }
 
+    // Tra ve so ngay muon sach = NgayTra - Ngay hiện tại
+// Class css for table
+
+    private void xuatPhieuMuon() {
+        try {
+            Hashtable map = new Hashtable();
+            JasperReport rpt = JasperCompileManager.compileReport("C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\TGSTeam\\src\\Report\\PhieuMuonTra.jrxml");
+            map.put("sMaPX", maSo.trim());
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=TGSTeam", "sa", "123");
+            JasperPrint p = JasperFillManager.fillReport(rpt, map, conn);
+            JasperViewer.viewReport(p, false);
+            //JasperPrintManager.printReport(p, false);
+        } catch (JRException ex) {
+            Logger.getLogger(View_Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(View_Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public class RenderTablaPrestamos extends DefaultTableCellRenderer {
